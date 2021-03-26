@@ -7,15 +7,14 @@
 
 import UIKit
 
-class AppsSearchVC: UIViewController {
+class SearchVC: UIViewController {
     // MARK: - Properties
     fileprivate var apps = [App]()
     fileprivate var searchTimer: Timer?
     
     // MARK: - Views
     private lazy var collectionView: UICollectionView = {
-        let layout = UICollectionViewFlowLayout()
-        let cv = UICollectionView(frame: .zero, collectionViewLayout: layout)
+        let cv = CollectionView()
         cv.register(SearchResultsCell.self, forCellWithReuseIdentifier: SearchResultsCell.reuseId)
         cv.backgroundColor = .white
         cv.delegate = self
@@ -67,7 +66,7 @@ class AppsSearchVC: UIViewController {
 }
 
 // MARK: - UICollectionViewDataSource, UICollectionViewDelegateFlowLayout
-extension AppsSearchVC: UICollectionViewDataSource, UICollectionViewDelegateFlowLayout {
+extension SearchVC: UICollectionViewDataSource, UICollectionViewDelegateFlowLayout {
     func collectionView(_ collectionView: UICollectionView, numberOfItemsInSection section: Int) -> Int {
         return apps.count
     }
@@ -84,7 +83,7 @@ extension AppsSearchVC: UICollectionViewDataSource, UICollectionViewDelegateFlow
 }
 
 // MARK: - UISearchBarDelegate
-extension AppsSearchVC: UISearchResultsUpdating {
+extension SearchVC: UISearchResultsUpdating {
     func updateSearchResults(for searchController: UISearchController) {
         guard searchController.searchBar.text != "" else {
             emptySearchLabel.isHidden = false
