@@ -19,9 +19,9 @@ class SearchResultsCell: UICollectionViewCell {
         return iv
     }()
     
-    private let nameLabel = Label(text: "App Name", bgColor: .blue)
-    private let categoryLabel = Label(text: "Photos & Video", bgColor: .purple)
-    private let ratingLabel = Label(text: "9.26M", bgColor: .systemPink)
+    private let nameLabel = Label(text: "App Name")
+    private let categoryLabel = Label(text: "Photos & Video")
+    private let ratingLabel = Label(text: "9.26M")
     private lazy var labelStackView = StackView(views: [nameLabel, categoryLabel, ratingLabel], axis: .vertical)
     
     private let getButton: UIButton = {

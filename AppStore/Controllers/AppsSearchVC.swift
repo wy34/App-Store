@@ -10,6 +10,7 @@ import UIKit
 class AppsSearchVC: UIViewController {
     // MARK: - Properties
     fileprivate var apps = [App]()
+    fileprivate var searchTimer: Timer?
     
     // MARK: - Views
     private lazy var collectionView: UICollectionView = {
@@ -21,28 +22,41 @@ class AppsSearchVC: UIViewController {
         cv.dataSource = self
         return cv
     }()
+    
+    private let emptySearchLabel = Label(text: "Please enter search term above...", alignment: .center, font: .boldSystemFont(ofSize: 20))
+    
+    private let searchController = UISearchController(searchResultsController: nil)
 
     // MARK: - Lifecycle
     override func viewDidLoad() {
         super.viewDidLoad()
         layoutUI()
-        fetchSearchedApps()
+        setupSearchController()
     }
     
     // MARK: - Helpers
     fileprivate func layoutUI() {
         view.addSubview(collectionView)
         collectionView.frame = view.bounds
+        
+        collectionView.addSubview(emptySearchLabel)
+        emptySearchLabel.center(to: collectionView, by: .centerX, withMultiplierOf: 1)
+        emptySearchLabel.center(to: collectionView, by: .centerY, withMultiplierOf: 0.25)
     }
     
-    fileprivate func fetchSearchedApps() {
-        NetworkManager.shared.fetchiTunesApps { [weak self] (result) in
+    fileprivate func setupSearchController() {
+        navigationItem.searchController = searchController
+        navigationItem.hidesSearchBarWhenScrolling = false
+        searchController.obscuresBackgroundDuringPresentation = false
+        searchController.searchResultsUpdater = self
+    }
+    
+    fileprivate func fetchSearchedApps(searchTerm: String) {
+        NetworkManager.shared.fetchiTunesApps(searchTerm: searchTerm) { [weak self] (result) in
             guard let self = self else { return }
             
             switch result {
                 case .success(let searchResult):
-                    print(searchResult.resultCount)
-                    print(searchResult.results[0].artworkUrl100)
                     self.apps = searchResult.results
                     DispatchQueue.main.async { self.collectionView.reloadData() }
                 case .failure(let error):
@@ -66,5 +80,24 @@ extension AppsSearchVC: UICollectionViewDataSource, UICollectionViewDelegateFlow
     
     func collectionView(_ collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, sizeForItemAt indexPath: IndexPath) -> CGSize {
         return CGSize(width: view.frame.width, height: 350)
+    }
+}
+
+// MARK: - UISearchBarDelegate
+extension AppsSearchVC: UISearchResultsUpdating {
+    func updateSearchResults(for searchController: UISearchController) {
+        guard searchController.searchBar.text != "" else {
+            emptySearchLabel.isHidden = false
+            apps.removeAll()
+            collectionView.reloadData()
+            return
+        }
+        
+        emptySearchLabel.isHidden = true
+
+        searchTimer?.invalidate()
+        searchTimer = Timer.scheduledTimer(withTimeInterval: 0.5, repeats: false, block: { [weak self] (_) in
+            self?.fetchSearchedApps(searchTerm: searchController.searchBar.text!)
+        })
     }
 }

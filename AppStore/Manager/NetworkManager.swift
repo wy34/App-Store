@@ -13,8 +13,8 @@ class NetworkManager {
     let imageCache = NSCache<NSString, UIImage>()
     
     // MARK: - Helpers
-    func fetchiTunesApps(completion: @escaping (Result<SearchResult, Error>) -> Void) {
-        let urlString = "https://itunes.apple.com/search?term=instagram&entity=software"
+    func fetchiTunesApps(searchTerm: String, completion: @escaping (Result<SearchResult, Error>) -> Void) {
+        let urlString = "https://itunes.apple.com/search?term=\(searchTerm)&entity=software"
         
         if let url = URL(string: urlString) {
             URLSession.shared.dataTask(with: url) { (data, response, error) in

@@ -17,9 +17,15 @@ class Label: UILabel {
         fatalError("init(coder:) has not been implemented")
     }
     
-    init(text: String, bgColor: UIColor) {
+    init(text: String) {
         super.init(frame: .zero)
         self.text = text
-//        self.backgroundColor = bgColor
+    }
+    
+    init(text: String, alignment: NSTextAlignment = .left, font: UIFont) {
+        super.init(frame: .zero)
+        self.text = text
+        self.textAlignment = alignment
+        self.font = font
     }
 }
