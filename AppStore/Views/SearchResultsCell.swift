@@ -12,39 +12,17 @@ class SearchResultsCell: UICollectionViewCell {
     static let reuseId = "SearchResultsCell"
     
     // MARK: - Views
-    private let imageView: UIImageView = {
+    private let appIconImageView: UIImageView = {
         let iv = UIImageView()
         iv.backgroundColor = .red
         iv.layer.cornerRadius = 12
         return iv
     }()
     
-    private let nameLabel: UILabel = {
-        let label = UILabel()
-        label.text = "App Name"
-        label.backgroundColor = .blue
-        return label
-    }()
-    
-    private let categoryLabel: UILabel = {
-        let label = UILabel()
-        label.text = "Photos & Video"
-        label.backgroundColor = .purple
-        return label
-    }()
-    
-    private let ratingLabel: UILabel = {
-        let label = UILabel()
-        label.text = "9.26M"
-        label.backgroundColor = .systemPink
-        return label
-    }()
-    
-    private lazy var labelStackView: UIStackView = {
-        let stack = UIStackView(arrangedSubviews: [nameLabel, categoryLabel, ratingLabel])
-        stack.axis = .vertical
-        return stack
-    }()
+    private let nameLabel = Label(text: "App Name", bgColor: .blue)
+    private let categoryLabel = Label(text: "Photos & Video", bgColor: .purple)
+    private let ratingLabel = Label(text: "9.26M", bgColor: .systemPink)
+    private lazy var labelStackView = StackView(views: [nameLabel, categoryLabel, ratingLabel], axis: .vertical)
     
     private let getButton: UIButton = {
         let button = UIButton(type: .system)
@@ -52,23 +30,23 @@ class SearchResultsCell: UICollectionViewCell {
         button.setTitleColor(.blue, for: .normal)
         button.titleLabel?.font = .boldSystemFont(ofSize: 14)
         button.backgroundColor = .darkGray
-        button.layer.cornerRadius = 12
+        button.layer.cornerRadius = 16
         return button
     }()
     
-    private lazy var stackView: UIStackView = {
-        let stack = UIStackView(arrangedSubviews: [imageView, labelStackView, getButton])
-        stack.translatesAutoresizingMaskIntoConstraints = false
-        stack.spacing = 12
-        stack.alignment = .center
-        return stack
-    }()
+    private lazy var topInfoStackView = StackView(views: [appIconImageView, labelStackView, getButton], spacing: 12, alignment: .center)
+    
+    private let screenshot1ImageView = ImageView()
+    private let screenshot2ImageView = ImageView()
+    private let screenshot3ImageView = ImageView()
+    private lazy var screenShotStackView = StackView(views: [screenshot1ImageView, screenshot2ImageView, screenshot3ImageView], spacing: 12, distribution: .fillEqually)
+    
+    private lazy var overallStackView = StackView(views: [topInfoStackView, screenShotStackView], axis: .vertical, spacing: 16)
     
     // MARK: - Init
     override init(frame: CGRect) {
         super.init(frame: frame)
         layoutUI()
-        backgroundColor = .green
     }
     
     required init?(coder: NSCoder) {
@@ -77,18 +55,10 @@ class SearchResultsCell: UICollectionViewCell {
     
     // MARK: - Helpers
     func layoutUI() {
-        addSubview(stackView)
+        addSubview(overallStackView)
         
-        NSLayoutConstraint.activate([
-            stackView.topAnchor.constraint(equalTo: topAnchor),
-            stackView.leadingAnchor.constraint(equalTo: leadingAnchor, constant: 12),
-            stackView.trailingAnchor.constraint(equalTo: trailingAnchor, constant: -12),
-            stackView.bottomAnchor.constraint(equalTo: bottomAnchor),
-            
-            imageView.widthAnchor.constraint(equalToConstant: 64),
-            imageView.heightAnchor.constraint(equalToConstant: 64),
-            
-            getButton.widthAnchor.constraint(equalToConstant: 80)
-        ])
+        overallStackView.anchor(top: topAnchor, trailing: trailingAnchor, bottom: bottomAnchor, leading: leadingAnchor, padTop: 16, padTrailing: 16, padBottom: 16, padLeading: 16)
+        appIconImageView.setDimension(wConst: 64, hConst: 64)
+        getButton.setDimension(wConst: 80, hConst: 32)
     }
 }

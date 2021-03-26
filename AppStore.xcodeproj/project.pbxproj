@@ -15,6 +15,9 @@
 		4CDADF6C260D3B2000EEB89F /* AppsSearchVC.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4CDADF6B260D3B2000EEB89F /* AppsSearchVC.swift */; };
 		4CDADF71260D3E7C00EEB89F /* SearchResultsCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4CDADF70260D3E7C00EEB89F /* SearchResultsCell.swift */; };
 		4CDADF76260D612600EEB89F /* UIView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4CDADF75260D612600EEB89F /* UIView.swift */; };
+		4CDADF7A260D801E00EEB89F /* Label.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4CDADF79260D801E00EEB89F /* Label.swift */; };
+		4CDADF81260D815200EEB89F /* ImageView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4CDADF80260D815200EEB89F /* ImageView.swift */; };
+		4CDADF85260D877400EEB89F /* StackView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4CDADF84260D877400EEB89F /* StackView.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
@@ -28,6 +31,9 @@
 		4CDADF6B260D3B2000EEB89F /* AppsSearchVC.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppsSearchVC.swift; sourceTree = "<group>"; };
 		4CDADF70260D3E7C00EEB89F /* SearchResultsCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SearchResultsCell.swift; sourceTree = "<group>"; };
 		4CDADF75260D612600EEB89F /* UIView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UIView.swift; sourceTree = "<group>"; };
+		4CDADF79260D801E00EEB89F /* Label.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Label.swift; sourceTree = "<group>"; };
+		4CDADF80260D815200EEB89F /* ImageView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ImageView.swift; sourceTree = "<group>"; };
+		4CDADF84260D877400EEB89F /* StackView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = StackView.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -84,6 +90,9 @@
 		4CDADF6F260D3E6500EEB89F /* Views */ = {
 			isa = PBXGroup;
 			children = (
+				4CDADF79260D801E00EEB89F /* Label.swift */,
+				4CDADF80260D815200EEB89F /* ImageView.swift */,
+				4CDADF84260D877400EEB89F /* StackView.swift */,
 				4CDADF70260D3E7C00EEB89F /* SearchResultsCell.swift */,
 			);
 			path = Views;
@@ -166,9 +175,12 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				4CDADF81260D815200EEB89F /* ImageView.swift in Sources */,
 				4CDADF6C260D3B2000EEB89F /* AppsSearchVC.swift in Sources */,
 				4CDADF71260D3E7C00EEB89F /* SearchResultsCell.swift in Sources */,
 				4CDADF55260D266300EEB89F /* BaseTabBarController.swift in Sources */,
+				4CDADF7A260D801E00EEB89F /* Label.swift in Sources */,
+				4CDADF85260D877400EEB89F /* StackView.swift in Sources */,
 				4CDADF51260D266300EEB89F /* AppDelegate.swift in Sources */,
 				4CDADF76260D612600EEB89F /* UIView.swift in Sources */,
 				4CDADF53260D266300EEB89F /* SceneDelegate.swift in Sources */,
