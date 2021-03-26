@@ -72,13 +72,13 @@
 			children = (
 				4CDADF50260D266300EEB89F /* AppDelegate.swift */,
 				4CDADF52260D266300EEB89F /* SceneDelegate.swift */,
+				4CDADF59260D266400EEB89F /* Assets.xcassets */,
+				4CDADF5B260D266400EEB89F /* LaunchScreen.storyboard */,
 				4CDADF74260D611A00EEB89F /* Extensions */,
 				4CDADF8A260D8F1F00EEB89F /* Manager */,
 				4CDADF90260D902500EEB89F /* Model */,
 				4CDADF6F260D3E6500EEB89F /* Views */,
 				4CDADF6A260D3B0300EEB89F /* Controllers */,
-				4CDADF59260D266400EEB89F /* Assets.xcassets */,
-				4CDADF5B260D266400EEB89F /* LaunchScreen.storyboard */,
 				4CDADF5E260D266400EEB89F /* Info.plist */,
 			);
 			path = AppStore;

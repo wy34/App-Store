@@ -54,11 +54,17 @@ class SearchResultsCell: UICollectionViewCell {
     }
     
     // MARK: - Helpers
-    func layoutUI() {
+    fileprivate func layoutUI() {
         addSubview(overallStackView)
         
         overallStackView.anchor(top: topAnchor, trailing: trailingAnchor, bottom: bottomAnchor, leading: leadingAnchor, padTop: 16, padTrailing: 16, padBottom: 16, padLeading: 16)
         appIconImageView.setDimension(wConst: 64, hConst: 64)
         getButton.setDimension(wConst: 80, hConst: 32)
+    }
+    
+    func set(app: App) {
+        nameLabel.text = app.trackName
+        categoryLabel.text = app.primaryGenreName
+        ratingLabel.text = String(app.averageUserRating ?? 0.0)
     }
 }

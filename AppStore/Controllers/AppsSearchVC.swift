@@ -8,6 +8,9 @@
 import UIKit
 
 class AppsSearchVC: UIViewController {
+    // MARK: - Properties
+    fileprivate var appResults = [App]()
+    
     // MARK: - Views
     private lazy var collectionView: UICollectionView = {
         let layout = UICollectionViewFlowLayout()
@@ -23,32 +26,40 @@ class AppsSearchVC: UIViewController {
     override func viewDidLoad() {
         super.viewDidLoad()
         layoutUI()
-        
-        NetworkManager.shared.fetchiTunesApps { (result) in
+        fetchSearchedApps()
+    }
+    
+    // MARK: - Helpers
+    fileprivate func layoutUI() {
+        view.addSubview(collectionView)
+        collectionView.frame = view.bounds
+    }
+    
+    fileprivate func fetchSearchedApps() {
+        NetworkManager.shared.fetchiTunesApps { [weak self] (result) in
+            guard let self = self else { return }
+            
             switch result {
                 case .success(let searchResult):
                     print(searchResult.resultCount)
+                    self.appResults = searchResult.results
+                    DispatchQueue.main.async { self.collectionView.reloadData() }
                 case .failure(let error):
                     print(error.localizedDescription)
             }
         }
-    }
-    
-    // MARK: - Helpers
-    func layoutUI() {
-        view.addSubview(collectionView)
-        collectionView.frame = view.bounds
     }
 }
 
 // MARK: - UICollectionViewDataSource, UICollectionViewDelegateFlowLayout
 extension AppsSearchVC: UICollectionViewDataSource, UICollectionViewDelegateFlowLayout {
     func collectionView(_ collectionView: UICollectionView, numberOfItemsInSection section: Int) -> Int {
-        return 5
+        return appResults.count
     }
     
     func collectionView(_ collectionView: UICollectionView, cellForItemAt indexPath: IndexPath) -> UICollectionViewCell {
         let cell = collectionView.dequeueReusableCell(withReuseIdentifier: SearchResultsCell.reuseId, for: indexPath) as! SearchResultsCell
+        cell.set(app: appResults[indexPath.item])
         return cell
     }
     

@@ -11,7 +11,7 @@ class NetworkManager {
     static let shared = NetworkManager()
     
     func fetchiTunesApps(completion: @escaping (Result<SearchResult, Error>) -> Void) {
-        let urlString = "https://itunes.apple.com/search?term=instagram&entity=software"
+        let urlString = "https://itunes.apple.com/search?term=clash&entity=software"
         
         if let url = URL(string: urlString) {
             URLSession.shared.dataTask(with: url) { (data, response, error) in
