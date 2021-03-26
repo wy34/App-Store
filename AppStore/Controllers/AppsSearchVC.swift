@@ -23,6 +23,15 @@ class AppsSearchVC: UIViewController {
     override func viewDidLoad() {
         super.viewDidLoad()
         layoutUI()
+        
+        NetworkManager.shared.fetchiTunesApps { (result) in
+            switch result {
+                case .success(let searchResult):
+                    print(searchResult.resultCount)
+                case .failure(let error):
+                    print(error.localizedDescription)
+            }
+        }
     }
     
     // MARK: - Helpers

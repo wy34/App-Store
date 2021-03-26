@@ -25,5 +25,4 @@ class StackView: UIStackView {
         self.alignment = alignment
         views.forEach({ addArrangedSubview($0) })
     }
-    
 }
