@@ -9,7 +9,7 @@ import UIKit
 
 class AppsSearchVC: UIViewController {
     // MARK: - Properties
-    fileprivate var appResults = [App]()
+    fileprivate var apps = [App]()
     
     // MARK: - Views
     private lazy var collectionView: UICollectionView = {
@@ -42,7 +42,8 @@ class AppsSearchVC: UIViewController {
             switch result {
                 case .success(let searchResult):
                     print(searchResult.resultCount)
-                    self.appResults = searchResult.results
+                    print(searchResult.results[0].artworkUrl100)
+                    self.apps = searchResult.results
                     DispatchQueue.main.async { self.collectionView.reloadData() }
                 case .failure(let error):
                     print(error.localizedDescription)
@@ -54,12 +55,12 @@ class AppsSearchVC: UIViewController {
 // MARK: - UICollectionViewDataSource, UICollectionViewDelegateFlowLayout
 extension AppsSearchVC: UICollectionViewDataSource, UICollectionViewDelegateFlowLayout {
     func collectionView(_ collectionView: UICollectionView, numberOfItemsInSection section: Int) -> Int {
-        return appResults.count
+        return apps.count
     }
     
     func collectionView(_ collectionView: UICollectionView, cellForItemAt indexPath: IndexPath) -> UICollectionViewCell {
         let cell = collectionView.dequeueReusableCell(withReuseIdentifier: SearchResultsCell.reuseId, for: indexPath) as! SearchResultsCell
-        cell.set(app: appResults[indexPath.item])
+        cell.configureCellWith(app: apps[indexPath.item])
         return cell
     }
     

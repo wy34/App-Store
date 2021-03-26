@@ -5,13 +5,16 @@
 //  Created by William Yeung on 3/25/21.
 //
 
-import Foundation
+import UIKit
 
 class NetworkManager {
+    // MARK: - Properties
     static let shared = NetworkManager()
+    let imageCache = NSCache<NSString, UIImage>()
     
+    // MARK: - Helpers
     func fetchiTunesApps(completion: @escaping (Result<SearchResult, Error>) -> Void) {
-        let urlString = "https://itunes.apple.com/search?term=clash&entity=software"
+        let urlString = "https://itunes.apple.com/search?term=instagram&entity=software"
         
         if let url = URL(string: urlString) {
             URLSession.shared.dataTask(with: url) { (data, response, error) in
@@ -33,6 +36,26 @@ class NetworkManager {
                     }
                 }
             }.resume()
+        }
+    }
+    
+    func downloadImage(withURLString urlString: String, completion: @escaping (UIImage?) -> Void) {
+        let cacheKey = NSString(string: urlString)
+        
+        if let image = imageCache.object(forKey: cacheKey) {
+            completion(image)
+        } else {
+            DispatchQueue.global(qos: .userInitiated).async {
+                if let url = URL(string: urlString) {
+                    if let data = try? Data(contentsOf: url) {
+                        let downloadedImage = UIImage(data: data)!
+                        self.imageCache.setObject(downloadedImage, forKey: cacheKey)
+                        completion(downloadedImage)
+                    }
+                }
+                
+                completion(nil)
+            }
         }
     }
 }

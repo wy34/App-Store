@@ -17,8 +17,12 @@ class ImageView: UIImageView {
         fatalError("init(coder:) has not been implemented")
     }
     
-    init() {
+    init(cornerRadius: CGFloat, borderWidth: CGFloat, borderColor: UIColor) {
         super.init(frame: .zero)
-        self.backgroundColor = .blue
+        self.layer.cornerRadius = cornerRadius
+        self.layer.borderWidth = borderWidth
+        self.layer.borderColor = borderColor.cgColor
+        self.contentMode = .scaleAspectFill
+        self.clipsToBounds = true
     }
 }
