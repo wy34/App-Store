@@ -23,7 +23,6 @@ class SearchVC: UIViewController {
     }()
     
     private let emptySearchLabel = Label(text: "Please enter search term above...", alignment: .center, font: .boldSystemFont(ofSize: 20))
-    
     private let searchController = UISearchController(searchResultsController: nil)
 
     // MARK: - Lifecycle

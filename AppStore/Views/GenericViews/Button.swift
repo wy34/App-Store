@@ -21,7 +21,7 @@ class Button: UIButton {
         super.init(frame: .zero)
         self.init(type: .system)
         setTitle(title, for: .normal)
-        setTitleColor(.blue, for: .normal)
+        setTitleColor(.systemBlue, for: .normal)
         titleLabel?.font = .boldSystemFont(ofSize: 14)
         backgroundColor = UIColor(white: 0.9, alpha: 1)
         layer.cornerRadius = 16

@@ -13,7 +13,6 @@ class AppsGroupVC: UIViewController {
         let cv = CollectionView(scrollDirection: .horizontal, showsIndicators: false)
         cv.register(AppRowCell.self, forCellWithReuseIdentifier: AppRowCell.reuseId)
         cv.backgroundColor = .white
-        cv.isPagingEnabled = true
         cv.delegate = self
         cv.dataSource = self
         return cv
@@ -39,7 +38,7 @@ extension AppsGroupVC: UICollectionViewDelegate, UICollectionViewDataSource, UIC
     }
     
     func collectionView(_ collectionView: UICollectionView, numberOfItemsInSection section: Int) -> Int {
-        return 6
+        return 100
     }
     
     func collectionView(_ collectionView: UICollectionView, cellForItemAt indexPath: IndexPath) -> UICollectionViewCell {

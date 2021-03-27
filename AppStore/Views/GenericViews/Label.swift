@@ -28,4 +28,18 @@ class Label: UILabel {
         self.textAlignment = alignment
         self.font = font
     }
+    
+    init(text: String, textColor: UIColor, font: UIFont) {
+        super.init(frame: .zero)
+        self.text = text
+        self.textColor = textColor
+        self.font = font
+    }
+    
+    init(text: String, font: UIFont, numberOfLines: Int) {
+        super.init(frame: .zero)
+        self.text = text
+        self.font = font
+        self.numberOfLines = numberOfLines
+    }
 }

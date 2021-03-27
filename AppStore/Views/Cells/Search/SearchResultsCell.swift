@@ -12,13 +12,7 @@ class SearchResultsCell: UICollectionViewCell {
     static let reuseId = "SearchResultsCell"
     
     // MARK: - Views
-    private let appIconImageView: UIImageView = {
-        let iv = UIImageView()
-        iv.layer.cornerRadius = 12
-        iv.clipsToBounds = true
-        return iv
-    }()
-    
+    private let appIconImageView = ImageView(cornerRadius: 12)
     private let nameLabel = Label(text: "App Name")
     private let categoryLabel = Label(text: "Photos & Video")
     private let ratingLabel = Label(text: "9.26M")
