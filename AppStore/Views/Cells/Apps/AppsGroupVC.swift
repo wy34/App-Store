@@ -7,13 +7,12 @@
 
 import UIKit
 
-class AppsHorizontalVC: UIViewController {
+class AppsGroupVC: UIViewController {
     // MARK: - Views
     private lazy var collectionView: UICollectionView = {
-        let cv = CollectionView(scrollDirection: .horizontal)
-        cv.register(UICollectionViewCell.self, forCellWithReuseIdentifier: "Cell")
-        cv.backgroundColor = .blue
-        cv.showsHorizontalScrollIndicator = false
+        let cv = CollectionView(scrollDirection: .horizontal, showsIndicators: false)
+        cv.register(AppRowCell.self, forCellWithReuseIdentifier: AppRowCell.reuseId)
+        cv.backgroundColor = .white
         cv.isPagingEnabled = true
         cv.delegate = self
         cv.dataSource = self
@@ -34,9 +33,9 @@ class AppsHorizontalVC: UIViewController {
 }
 
 // MARK: - UICollectionViewDelegate, UICollectionViewDataSource, UICollectionViewDelegateFlowLayout
-extension AppsHorizontalVC: UICollectionViewDelegate, UICollectionViewDataSource, UICollectionViewDelegateFlowLayout {
+extension AppsGroupVC: UICollectionViewDelegate, UICollectionViewDataSource, UICollectionViewDelegateFlowLayout {
     var collectionViewSpacings: (horizontalBetweenSpacing: CGFloat, verticalBetweenSpacing: CGFloat, edgeInset: CGFloat) {
-        return (horizontalBetweenSpacing: 8, verticalBetweenSpacing: 3, edgeInset: 8)
+        return (horizontalBetweenSpacing: 10, verticalBetweenSpacing: 3, edgeInset: 16)
     }
     
     func collectionView(_ collectionView: UICollectionView, numberOfItemsInSection section: Int) -> Int {
@@ -44,15 +43,18 @@ extension AppsHorizontalVC: UICollectionViewDelegate, UICollectionViewDataSource
     }
     
     func collectionView(_ collectionView: UICollectionView, cellForItemAt indexPath: IndexPath) -> UICollectionViewCell {
-        let cell = collectionView.dequeueReusableCell(withReuseIdentifier: "Cell", for: indexPath)
-        cell.backgroundColor = .red
+        let cell = collectionView.dequeueReusableCell(withReuseIdentifier: AppRowCell.reuseId, for: indexPath) as! AppRowCell
         return cell
     }
     
     func collectionView(_ collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, sizeForItemAt indexPath: IndexPath) -> CGSize {
-        let width = view.frame.width - (collectionViewSpacings.edgeInset * 2)
+        let width = view.frame.width - (collectionViewSpacings.edgeInset * 2) - collectionViewSpacings.horizontalBetweenSpacing
         let height = ((view.frame.height - collectionViewSpacings.edgeInset * 2)) / 3 - (collectionViewSpacings.verticalBetweenSpacing * 2)
         return CGSize(width: width, height: height)
+    }
+    
+    func collectionView(_ collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, minimumLineSpacingForSectionAt section: Int) -> CGFloat {
+        return collectionViewSpacings.horizontalBetweenSpacing
     }
     
     func collectionView(_ collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, minimumInteritemSpacingForSectionAt section: Int) -> CGFloat {

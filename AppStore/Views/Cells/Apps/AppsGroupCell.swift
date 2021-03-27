@@ -12,13 +12,12 @@ class AppsGroupCell: UICollectionViewCell {
     static let reuseId = "AppsGroupCell"
     
     // MARK: - Views
-    private let titleLabel = Label(text: "App Section", font: .boldSystemFont(ofSize: 30))
-    private let appsHorizontalVC = AppsHorizontalVC()
+    private let titleLabel = Label(text: "App Section", font: .boldSystemFont(ofSize: 25))
+    private let appsHorizontalVC = AppsGroupVC()
     
     // MARK: - Init
     override init(frame: CGRect) {
         super.init(frame: frame)
-        backgroundColor = .purple
         layoutUI()
     }
     
@@ -30,7 +29,7 @@ class AppsGroupCell: UICollectionViewCell {
     private func layoutUI() {
         addSubviews(titleLabel, appsHorizontalVC.view)
         
-        titleLabel.anchor(top: topAnchor, trailing: trailingAnchor, leading: leadingAnchor)
+        titleLabel.anchor(top: topAnchor, trailing: trailingAnchor, leading: leadingAnchor, padLeading: 16)
         appsHorizontalVC.view.anchor(top: titleLabel.bottomAnchor, trailing: trailingAnchor, bottom: bottomAnchor, leading: leadingAnchor)
     }
 }

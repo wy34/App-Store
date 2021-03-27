@@ -14,7 +14,7 @@ class SearchVC: UIViewController {
     
     // MARK: - Views
     private lazy var collectionView: UICollectionView = {
-        let cv = CollectionView()
+        let cv = CollectionView(showsIndicators: false)
         cv.register(SearchResultsCell.self, forCellWithReuseIdentifier: SearchResultsCell.reuseId)
         cv.backgroundColor = .white
         cv.delegate = self

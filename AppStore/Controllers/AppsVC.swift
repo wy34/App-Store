@@ -10,7 +10,7 @@ import UIKit
 class AppsVC: UIViewController {
     // MARK: - Views
     private lazy var collectionView: UICollectionView = {
-        let cv = CollectionView()
+        let cv = CollectionView(showsIndicators: false)
         cv.register(AppsGroupCell.self, forCellWithReuseIdentifier: AppsGroupCell.reuseId)
         cv.backgroundColor = .white
         cv.delegate = self
@@ -43,10 +43,10 @@ extension AppsVC: UICollectionViewDelegate, UICollectionViewDataSource, UICollec
     }
     
     func collectionView(_ collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, sizeForItemAt indexPath: IndexPath) -> CGSize {
-        return CGSize(width: view.frame.width, height: 250)
+        return CGSize(width: view.frame.width, height: 300)
     }
-//
-//    func collectionView(_ collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, minimumLineSpacingForSectionAt section: Int) -> CGFloat {
-//        return 0
-//    }
+    
+    func collectionView(_ collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, insetForSectionAt section: Int) -> UIEdgeInsets {
+        return UIEdgeInsets(top: 16, left: 0, bottom: 0, right: 0)
+    }
 }

@@ -17,13 +17,11 @@ class CollectionView: UICollectionView {
         fatalError("init(coder:) has not been implemented")
     }
     
-    init() {
-        super.init(frame: .zero, collectionViewLayout: UICollectionViewFlowLayout())
-    }
-    
-    init(scrollDirection: UICollectionView.ScrollDirection) {
+    init(scrollDirection: UICollectionView.ScrollDirection = .vertical, showsIndicators: Bool = true) {
         let layout = UICollectionViewFlowLayout()
         layout.scrollDirection = scrollDirection
         super.init(frame: .zero, collectionViewLayout: layout)
+        showsVerticalScrollIndicator = showsIndicators
+        showsHorizontalScrollIndicator = showsIndicators
     }
 }

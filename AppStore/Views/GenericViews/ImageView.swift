@@ -17,7 +17,7 @@ class ImageView: UIImageView {
         fatalError("init(coder:) has not been implemented")
     }
     
-    init(cornerRadius: CGFloat, borderWidth: CGFloat, borderColor: UIColor) {
+    init(cornerRadius: CGFloat, borderWidth: CGFloat = 0, borderColor: UIColor = .clear) {
         super.init(frame: .zero)
         self.layer.cornerRadius = cornerRadius
         self.layer.borderWidth = borderWidth

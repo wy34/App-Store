@@ -23,16 +23,8 @@ class SearchResultsCell: UICollectionViewCell {
     private let categoryLabel = Label(text: "Photos & Video")
     private let ratingLabel = Label(text: "9.26M")
     private lazy var labelStackView = StackView(views: [nameLabel, categoryLabel, ratingLabel], axis: .vertical)
-    
-    private let getButton: UIButton = {
-        let button = UIButton(type: .system)
-        button.setTitle("GET", for: .normal)
-        button.setTitleColor(.blue, for: .normal)
-        button.titleLabel?.font = .boldSystemFont(ofSize: 14)
-        button.backgroundColor = UIColor(white: 0.5, alpha: 0.5)
-        button.layer.cornerRadius = 16
-        return button
-    }()
+ 
+    private let getButton = Button(title: "GET")
     
     private lazy var topInfoStackView = StackView(views: [appIconImageView, labelStackView, getButton], spacing: 12, alignment: .center)
     
@@ -59,7 +51,7 @@ class SearchResultsCell: UICollectionViewCell {
         
         overallStackView.anchor(top: topAnchor, trailing: trailingAnchor, bottom: bottomAnchor, leading: leadingAnchor, padTop: 16, padTrailing: 16, padBottom: 16, padLeading: 16)
         appIconImageView.setDimension(wConst: 64, hConst: 64)
-        getButton.setDimension(wConst: 80, hConst: 32)
+        getButton.setDimension(wConst: 65, hConst: 32)
     }
     
     func configureCellWith(app: App) {
