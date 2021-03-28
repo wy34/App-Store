@@ -48,7 +48,7 @@ class SearchResultsCell: UICollectionViewCell {
         getButton.setDimension(wConst: 65, hConst: 32)
     }
     
-    func configureCellWith(app: App) {
+    func configureWith(app: App) {
         nameLabel.text = app.trackName
         categoryLabel.text = app.primaryGenreName
         ratingLabel.text = String(app.averageUserRating ?? 0.0)
@@ -56,9 +56,12 @@ class SearchResultsCell: UICollectionViewCell {
     }
     
     func setImages(forApp app: App) {
+        appIconImageView.image = nil
         appIconImageView.downloadImage(from: app.artworkUrl100)
         
         for i in 0...2 {
+            [screenshot1ImageView, screenshot2ImageView, screenshot3ImageView][i].image = nil
+            
             if app.screenshotUrls.count > i {
                 switch i {
                     case 0:

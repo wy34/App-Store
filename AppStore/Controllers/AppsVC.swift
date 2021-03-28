@@ -64,7 +64,7 @@ extension AppsVC: UICollectionViewDelegate, UICollectionViewDataSource, UICollec
     
     func collectionView(_ collectionView: UICollectionView, cellForItemAt indexPath: IndexPath) -> UICollectionViewCell {
         let cell = collectionView.dequeueReusableCell(withReuseIdentifier: AppsGroupCell.reuseId, for: indexPath) as! AppsGroupCell
-        cell.set(appGroup: editorChoiceGames)
+        cell.configureWith(appGroup: editorChoiceGames)
         return cell
     }
     

@@ -72,7 +72,7 @@ extension SearchVC: UICollectionViewDataSource, UICollectionViewDelegateFlowLayo
     
     func collectionView(_ collectionView: UICollectionView, cellForItemAt indexPath: IndexPath) -> UICollectionViewCell {
         let cell = collectionView.dequeueReusableCell(withReuseIdentifier: SearchResultsCell.reuseId, for: indexPath) as! SearchResultsCell
-        cell.configureCellWith(app: apps[indexPath.item])
+        cell.configureWith(app: apps[indexPath.item])
         return cell
     }
     

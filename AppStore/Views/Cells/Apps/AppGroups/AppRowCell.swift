@@ -41,7 +41,7 @@ class AppRowCell: UICollectionViewCell {
         getButton.setDimension(wConst: 65, hConst: 32)
     }
     
-    func set(feedItem: FeedItem?) {
+    func configureWith(feedItem: FeedItem?) {
         guard let feedItem = feedItem else { return }
         nameLabel.text = feedItem.name
         companyLabel.text = feedItem.artistName

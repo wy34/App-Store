@@ -51,7 +51,7 @@ extension AppsGroupVC: UICollectionViewDelegate, UICollectionViewDataSource, UIC
     
     func collectionView(_ collectionView: UICollectionView, cellForItemAt indexPath: IndexPath) -> UICollectionViewCell {
         let cell = collectionView.dequeueReusableCell(withReuseIdentifier: AppRowCell.reuseId, for: indexPath) as! AppRowCell
-        cell.set(feedItem: feedItems?[indexPath.item])
+        cell.configureWith(feedItem: feedItems?[indexPath.item])
         return cell
     }
     
