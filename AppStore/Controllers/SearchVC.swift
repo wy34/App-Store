@@ -95,7 +95,8 @@ extension SearchVC: UISearchResultsUpdating {
 
         searchTimer?.invalidate()
         searchTimer = Timer.scheduledTimer(withTimeInterval: 0.5, repeats: false, block: { [weak self] (_) in
-            self?.fetchSearchedApps(searchTerm: searchController.searchBar.text!)
+            let queryString = searchController.searchBar.text?.addingPercentEncoding(withAllowedCharacters: .urlQueryAllowed)
+            self?.fetchSearchedApps(searchTerm: queryString!)
         })
     }
 }
