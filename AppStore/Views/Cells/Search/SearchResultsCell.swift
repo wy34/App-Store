@@ -56,27 +56,17 @@ class SearchResultsCell: UICollectionViewCell {
     }
     
     func setImages(forApp app: App) {
-        NetworkManager.shared.downloadImage(withURLString: app.artworkUrl100) { [weak self] (image) in
-            guard let self = self else { return }
-            guard let image = image else { return }
-            DispatchQueue.main.async { self.appIconImageView.image = image }
-        }
+        appIconImageView.downloadImage(from: app.artworkUrl100)
         
         for i in 0...2 {
             if app.screenshotUrls.count > i {
-                NetworkManager.shared.downloadImage(withURLString: app.screenshotUrls[i]) { [weak self] (image) in
-                    guard let self = self else { return }
-                    guard let image = image else { return }
-                    DispatchQueue.main.async {
-                        switch i {
-                            case 0:
-                                self.screenshot1ImageView.image = image
-                            case 1:
-                                self.screenshot2ImageView.image = image
-                            default:
-                                self.screenshot3ImageView.image = image
-                        }
-                    }
+                switch i {
+                    case 0:
+                        screenshot1ImageView.downloadImage(from: app.screenshotUrls[i])
+                    case 1:
+                        screenshot2ImageView.downloadImage(from: app.screenshotUrls[i])
+                    default:
+                        screenshot3ImageView.downloadImage(from: app.screenshotUrls[i])
                 }
             }
         }

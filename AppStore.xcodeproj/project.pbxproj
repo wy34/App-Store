@@ -16,6 +16,8 @@
 		4C0FF874260EDF7F00D99ABA /* AppsVCHeaderView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4C0FF873260EDF7F00D99ABA /* AppsVCHeaderView.swift */; };
 		4C0FF87C260EE18600D99ABA /* HeaderVC.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4C0FF87B260EE18600D99ABA /* HeaderVC.swift */; };
 		4C0FF880260EE3C300D99ABA /* HeaderCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4C0FF87F260EE3C300D99ABA /* HeaderCell.swift */; };
+		4C774A46261025A900ABBEFE /* AppGroup.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4C774A45261025A900ABBEFE /* AppGroup.swift */; };
+		4C774A492610380500ABBEFE /* UIImageView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4C774A482610380500ABBEFE /* UIImageView.swift */; };
 		4CDADF51260D266300EEB89F /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4CDADF50260D266300EEB89F /* AppDelegate.swift */; };
 		4CDADF53260D266300EEB89F /* SceneDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4CDADF52260D266300EEB89F /* SceneDelegate.swift */; };
 		4CDADF55260D266300EEB89F /* BaseTabBarController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4CDADF54260D266300EEB89F /* BaseTabBarController.swift */; };
@@ -41,6 +43,8 @@
 		4C0FF873260EDF7F00D99ABA /* AppsVCHeaderView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppsVCHeaderView.swift; sourceTree = "<group>"; };
 		4C0FF87B260EE18600D99ABA /* HeaderVC.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HeaderVC.swift; sourceTree = "<group>"; };
 		4C0FF87F260EE3C300D99ABA /* HeaderCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HeaderCell.swift; sourceTree = "<group>"; };
+		4C774A45261025A900ABBEFE /* AppGroup.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppGroup.swift; sourceTree = "<group>"; };
+		4C774A482610380500ABBEFE /* UIImageView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UIImageView.swift; sourceTree = "<group>"; };
 		4CDADF4D260D266300EEB89F /* AppStore.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = AppStore.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		4CDADF50260D266300EEB89F /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
 		4CDADF52260D266300EEB89F /* SceneDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SceneDelegate.swift; sourceTree = "<group>"; };
@@ -171,6 +175,7 @@
 			isa = PBXGroup;
 			children = (
 				4CDADF75260D612600EEB89F /* UIView.swift */,
+				4C774A482610380500ABBEFE /* UIImageView.swift */,
 			);
 			path = Extensions;
 			sourceTree = "<group>";
@@ -199,6 +204,7 @@
 			isa = PBXGroup;
 			children = (
 				4CDADF91260D903300EEB89F /* SearchResult.swift */,
+				4C774A45261025A900ABBEFE /* AppGroup.swift */,
 			);
 			path = Model;
 			sourceTree = "<group>";
@@ -278,10 +284,12 @@
 				4CDADF81260D815200EEB89F /* ImageView.swift in Sources */,
 				4CDADF6C260D3B2000EEB89F /* SearchVC.swift in Sources */,
 				4C0FF86D260ED15E00D99ABA /* AppRowCell.swift in Sources */,
+				4C774A492610380500ABBEFE /* UIImageView.swift in Sources */,
 				4CDADF8C260D8F2E00EEB89F /* NetworkManager.swift in Sources */,
 				4C0FF858260E795A00D99ABA /* AppsVC.swift in Sources */,
 				4CDADF71260D3E7C00EEB89F /* SearchResultsCell.swift in Sources */,
 				4C0FF861260E7CCE00D99ABA /* AppsGroupCell.swift in Sources */,
+				4C774A46261025A900ABBEFE /* AppGroup.swift in Sources */,
 				4CDADF55260D266300EEB89F /* BaseTabBarController.swift in Sources */,
 				4CDADF7A260D801E00EEB89F /* Label.swift in Sources */,
 				4CDADF85260D877400EEB89F /* StackView.swift in Sources */,

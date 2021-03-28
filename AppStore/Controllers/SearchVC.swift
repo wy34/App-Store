@@ -50,7 +50,7 @@ class SearchVC: UIViewController {
     }
     
     fileprivate func fetchSearchedApps(searchTerm: String) {
-        NetworkManager.shared.fetchiTunesApps(searchTerm: searchTerm) { [weak self] (result) in
+        NetworkManager.shared.fetchSearchResults(searchTerm: searchTerm) { [weak self] (result) in
             guard let self = self else { return }
             
             switch result {

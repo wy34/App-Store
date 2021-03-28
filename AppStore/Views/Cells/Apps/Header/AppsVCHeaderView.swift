@@ -17,7 +17,6 @@ class AppsVCHeaderView: UICollectionReusableView {
     // MARK: - Init
     override init(frame: CGRect) {
         super.init(frame: frame)
-        backgroundColor = .systemPink
         layoutUI()
     }
     

@@ -12,7 +12,7 @@ class AppRowCell: UICollectionViewCell {
     static let reuseId = "AppRowCell"
     
     // MARK: - Views
-    private let imageView = ImageView(cornerRadius: 8)
+    private let appIconImageView = ImageView(cornerRadius: 8)
     
     private let nameLabel = Label(text: "App Name", font: .boldSystemFont(ofSize: 16))
     private let companyLabel = Label(text: "Company Name", font: .systemFont(ofSize: 12))
@@ -20,12 +20,11 @@ class AppRowCell: UICollectionViewCell {
     
     private let getButton = Button(title: "GET")
     
-    private lazy var stackView = StackView(views: [imageView, labelStack, getButton], spacing: 16, alignment: .center)
+    private lazy var stackView = StackView(views: [appIconImageView, labelStack, getButton], spacing: 16, alignment: .center)
     
     // MARK: - Init
     override init(frame: CGRect) {
         super.init(frame: frame)
-        imageView.backgroundColor = .red
         layoutUI()
     }
     
@@ -38,7 +37,14 @@ class AppRowCell: UICollectionViewCell {
         addSubview(stackView)
         
         stackView.anchor(top: topAnchor, trailing: trailingAnchor, bottom: bottomAnchor, leading: leadingAnchor)
-        imageView.setDimension(wConst: 64, hConst: 64)
+        appIconImageView.setDimension(wConst: 64, hConst: 64)
         getButton.setDimension(wConst: 65, hConst: 32)
+    }
+    
+    func set(feedItem: FeedItem?) {
+        guard let feedItem = feedItem else { return }
+        nameLabel.text = feedItem.name
+        companyLabel.text = feedItem.artistName
+        appIconImageView.downloadImage(from: feedItem.artworkUrl100)
     }
 }

@@ -8,6 +8,14 @@
 import UIKit
 
 class AppsGroupVC: UIViewController {
+    // MARK: - Properties
+    var feedItems: [FeedItem]? {
+        didSet {
+            guard let _ = feedItems else { return }
+            collectionView.reloadData()
+        }
+    }
+    
     // MARK: - Views
     private lazy var collectionView: UICollectionView = {
         let cv = CollectionView(scrollDirection: .horizontal, showsIndicators: false)
@@ -38,11 +46,12 @@ extension AppsGroupVC: UICollectionViewDelegate, UICollectionViewDataSource, UIC
     }
     
     func collectionView(_ collectionView: UICollectionView, numberOfItemsInSection section: Int) -> Int {
-        return 100
+        return feedItems?.count ?? 0
     }
     
     func collectionView(_ collectionView: UICollectionView, cellForItemAt indexPath: IndexPath) -> UICollectionViewCell {
         let cell = collectionView.dequeueReusableCell(withReuseIdentifier: AppRowCell.reuseId, for: indexPath) as! AppRowCell
+        cell.set(feedItem: feedItems?[indexPath.item])
         return cell
     }
     

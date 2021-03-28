@@ -13,7 +13,7 @@ class NetworkManager {
     let imageCache = NSCache<NSString, UIImage>()
     
     // MARK: - Helpers
-    func fetchiTunesApps(searchTerm: String, completion: @escaping (Result<SearchResult, Error>) -> Void) {
+    func fetchSearchResults(searchTerm: String, completion: @escaping (Result<SearchResult, Error>) -> Void) {
         let urlString = "https://itunes.apple.com/search?term=\(searchTerm)&entity=software"
         
         if let url = URL(string: urlString) {
@@ -31,6 +31,32 @@ class NetworkManager {
                     do {
                         let searchResult = try JSONDecoder().decode(SearchResult.self, from: data)
                         completion(.success(searchResult))
+                    } catch {
+                        completion(.failure(error))
+                    }
+                }
+            }.resume()
+        }
+    }
+    
+    func fetchApps(completion: @escaping (Result<AppGroup, Error>) -> Void) {
+        let urlString = "https://rss.itunes.apple.com/api/v1/us/ios-apps/new-games-we-love/all/50/explicit.json"
+        
+        if let url = URL(string: urlString) {
+            URLSession.shared.dataTask(with: url) { (data, response, error) in
+                if let error = error {
+                    completion(.failure(error))
+                }
+                
+                guard let response = response as? HTTPURLResponse, response.statusCode == 200 else {
+                    completion(.failure(error!))
+                    return
+                }
+                
+                if let data = data {
+                    do {
+                        let appGroup = try JSONDecoder().decode(AppGroup.self, from: data)
+                        completion(.success(appGroup))
                     } catch {
                         completion(.failure(error))
                     }

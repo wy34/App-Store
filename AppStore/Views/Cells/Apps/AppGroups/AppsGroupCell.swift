@@ -12,7 +12,7 @@ class AppsGroupCell: UICollectionViewCell {
     static let reuseId = "AppsGroupCell"
     
     // MARK: - Views
-    private let titleLabel = Label(text: "App Section", font: .boldSystemFont(ofSize: 25))
+    private let titleLabel = Label(text: " ", font: .boldSystemFont(ofSize: 25))
     private let appsHorizontalVC = AppsGroupVC()
     
     // MARK: - Init
@@ -31,5 +31,11 @@ class AppsGroupCell: UICollectionViewCell {
         
         titleLabel.anchor(top: topAnchor, trailing: trailingAnchor, leading: leadingAnchor, padLeading: 16)
         appsHorizontalVC.view.anchor(top: titleLabel.bottomAnchor, trailing: trailingAnchor, bottom: bottomAnchor, leading: leadingAnchor)
+    }
+    
+    func set(appGroup: AppGroup?) {
+        guard let appGroup = appGroup else { return }
+        titleLabel.text = appGroup.feed.title
+        appsHorizontalVC.feedItems = appGroup.feed.results
     }
 }

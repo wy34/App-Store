@@ -8,6 +8,9 @@
 import UIKit
 
 class AppsVC: UIViewController {
+    // MARK: - Properties
+    var editorChoiceGames: AppGroup?
+    
     // MARK: - Views
     private lazy var collectionView: UICollectionView = {
         let cv = CollectionView(showsIndicators: false)
@@ -23,6 +26,18 @@ class AppsVC: UIViewController {
     override func viewDidLoad() {
         super.viewDidLoad()
         layoutUI()
+        
+        NetworkManager.shared.fetchApps { [weak self] (result) in
+            guard let self = self else { return }
+            
+            switch result {
+                case .success(let appGroup):
+                    self.editorChoiceGames = appGroup
+                    DispatchQueue.main.async { self.collectionView.reloadData() }
+                case .failure(let error):
+                    print(error.localizedDescription)
+            }
+        }
     }
     
     // MARK: - Helpers
@@ -44,11 +59,12 @@ extension AppsVC: UICollectionViewDelegate, UICollectionViewDataSource, UICollec
     }
     
     func collectionView(_ collectionView: UICollectionView, numberOfItemsInSection section: Int) -> Int {
-        return 5
+        return 1
     }
     
     func collectionView(_ collectionView: UICollectionView, cellForItemAt indexPath: IndexPath) -> UICollectionViewCell {
         let cell = collectionView.dequeueReusableCell(withReuseIdentifier: AppsGroupCell.reuseId, for: indexPath) as! AppsGroupCell
+        cell.set(appGroup: editorChoiceGames)
         return cell
     }
     
