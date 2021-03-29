@@ -39,9 +39,7 @@ class NetworkManager {
         }
     }
     
-    func fetchApps(completion: @escaping (Result<AppGroup, Error>) -> Void) {
-        let urlString = "https://rss.itunes.apple.com/api/v1/us/ios-apps/new-games-we-love/all/50/explicit.json"
-        
+    func fetchAppGroup(urlString: String, completion: @escaping (Result<AppGroup, Error>) -> Void) {
         if let url = URL(string: urlString) {
             URLSession.shared.dataTask(with: url) { (data, response, error) in
                 if let error = error {

@@ -9,7 +9,7 @@ import UIKit
 
 class AppsVC: UIViewController {
     // MARK: - Properties
-    var editorChoiceGames: AppGroup?
+    var appGroups = [AppGroup]()
     
     // MARK: - Views
     private lazy var collectionView: UICollectionView = {
@@ -26,24 +26,64 @@ class AppsVC: UIViewController {
     override func viewDidLoad() {
         super.viewDidLoad()
         layoutUI()
-        
-        NetworkManager.shared.fetchApps { [weak self] (result) in
-            guard let self = self else { return }
-            
-            switch result {
-                case .success(let appGroup):
-                    self.editorChoiceGames = appGroup
-                    DispatchQueue.main.async { self.collectionView.reloadData() }
-                case .failure(let error):
-                    print(error.localizedDescription)
-            }
-        }
+        fetchAppGroups()
     }
     
     // MARK: - Helpers
     func layoutUI() {
         view.addSubview(collectionView)
         collectionView.frame = view.bounds
+    }
+    
+    func fetchAppGroups() {
+        let dispatchGroup = DispatchGroup()
+        
+        var editorsChoice: AppGroup?
+        var topGrossing: AppGroup?
+        var topFree: AppGroup?
+        
+        dispatchGroup.enter()
+        NetworkManager.shared.fetchAppGroup(urlString: "https://rss.itunes.apple.com/api/v1/us/ios-apps/new-games-we-love/all/50/explicit.json") { (result) in
+            dispatchGroup.leave()
+            switch result {
+                case .success(let appGroup):
+                    editorsChoice = appGroup
+                case .failure(let error):
+                    print(error.localizedDescription)
+            }
+        }
+        
+        dispatchGroup.enter()
+        NetworkManager.shared.fetchAppGroup(urlString: "https://rss.itunes.apple.com/api/v1/us/ios-apps/top-grossing/all/50/explicit.json") { (result) in
+            dispatchGroup.leave()
+            switch result {
+                case .success(let appGroup):
+                    topGrossing = appGroup
+                case .failure(let error):
+                    print(error.localizedDescription)
+            }
+        }
+
+        dispatchGroup.enter()
+        NetworkManager.shared.fetchAppGroup(urlString: "https://rss.itunes.apple.com/api/v1/us/ios-apps/top-free/all/50/explicit.json") { (result) in
+            dispatchGroup.leave()
+            switch result {
+                case .success(let appGroup):
+                    topFree = appGroup
+                case .failure(let error):
+                    print(error.localizedDescription)
+            }
+        }
+
+        dispatchGroup.notify(queue: .main) {
+            for appGroup in [editorsChoice, topGrossing, topFree] {
+                if let group = appGroup {
+                    self.appGroups.append(group)
+                }
+            }
+            
+            self.collectionView.reloadData()
+        }
     }
 }
 
@@ -55,16 +95,17 @@ extension AppsVC: UICollectionViewDelegate, UICollectionViewDataSource, UICollec
     }
     
     func collectionView(_ collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, referenceSizeForHeaderInSection section: Int) -> CGSize {
-        return CGSize(width: view.frame.width, height: 300)
+        return CGSize(width: view.frame.width, height: 0)
     }
     
     func collectionView(_ collectionView: UICollectionView, numberOfItemsInSection section: Int) -> Int {
-        return 1
+        return appGroups.count
     }
     
     func collectionView(_ collectionView: UICollectionView, cellForItemAt indexPath: IndexPath) -> UICollectionViewCell {
         let cell = collectionView.dequeueReusableCell(withReuseIdentifier: AppsGroupCell.reuseId, for: indexPath) as! AppsGroupCell
-        cell.configureWith(appGroup: editorChoiceGames)
+        let appGroup = appGroups[indexPath.item]
+        cell.configureWith(appGroup: appGroup)
         return cell
     }
     
