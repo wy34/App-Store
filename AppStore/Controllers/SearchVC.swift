@@ -7,9 +7,9 @@
 
 import UIKit
 
-class SearchVC: UIViewController {
+class SearchVC: LoadingViewController {
     // MARK: - Properties
-    fileprivate var apps = [App]()
+    fileprivate var searchedApps = [App]()
     fileprivate var searchTimer: Timer?
     
     // MARK: - Views
@@ -55,7 +55,7 @@ class SearchVC: UIViewController {
             
             switch result {
                 case .success(let searchResult):
-                    self.apps = searchResult.results
+                    self.searchedApps = searchResult.results
                     DispatchQueue.main.async { self.collectionView.reloadData() }
                 case .failure(let error):
                     print(error.localizedDescription)
@@ -67,12 +67,12 @@ class SearchVC: UIViewController {
 // MARK: - UICollectionViewDataSource, UICollectionViewDelegateFlowLayout
 extension SearchVC: UICollectionViewDataSource, UICollectionViewDelegateFlowLayout {
     func collectionView(_ collectionView: UICollectionView, numberOfItemsInSection section: Int) -> Int {
-        return apps.count
+        return searchedApps.count
     }
     
     func collectionView(_ collectionView: UICollectionView, cellForItemAt indexPath: IndexPath) -> UICollectionViewCell {
         let cell = collectionView.dequeueReusableCell(withReuseIdentifier: SearchResultsCell.reuseId, for: indexPath) as! SearchResultsCell
-        cell.configureWith(app: apps[indexPath.item])
+        cell.configureWith(app: searchedApps[indexPath.item])
         return cell
     }
     
@@ -86,7 +86,7 @@ extension SearchVC: UISearchResultsUpdating {
     func updateSearchResults(for searchController: UISearchController) {
         guard searchController.searchBar.text != "" else {
             emptySearchLabel.isHidden = false
-            apps.removeAll()
+            searchedApps.removeAll()
             collectionView.reloadData()
             return
         }

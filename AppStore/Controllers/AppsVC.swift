@@ -7,7 +7,7 @@
 
 import UIKit
 
-class AppsVC: UIViewController {
+class AppsVC: LoadingViewController {
     // MARK: - Properties
     var socialApps = [SocialApp]()
     var appGroups = [AppGroup]()
@@ -23,29 +23,19 @@ class AppsVC: UIViewController {
         return cv
     }()
     
-    private let activityIndicator: UIActivityIndicatorView = {
-        let a = UIActivityIndicatorView()
-        a.style = .large
-        a.startAnimating()
-        a.hidesWhenStopped = true
-        return a
-    }()
-    
     // MARK: - Lifecycle
     override func viewDidLoad() {
         super.viewDidLoad()
         layoutUI()
+        showLoading()
         fetchAppGroups()
     }
     
     // MARK: - Helpers
     func layoutUI() {
-        view.addSubviews(collectionView, activityIndicator)
+        view.addSubviews(collectionView)
         collectionView.frame = view.bounds
-        activityIndicator.center(x: view.centerXAnchor, y: view.centerYAnchor)
     }
-    
-    #warning("Create showLoading/dismissLoading method")
     
     func fetchAppGroups() {
         let dispatchGroup = DispatchGroup()
@@ -100,8 +90,6 @@ class AppsVC: UIViewController {
         }
 
         dispatchGroup.notify(queue: .main) {
-            self.activityIndicator.stopAnimating()
-            
             for appGroup in [editorsChoice, topGrossing, topFree] {
                 if let group = appGroup {
                     self.appGroups.append(group)
@@ -109,6 +97,7 @@ class AppsVC: UIViewController {
             }
             
             self.collectionView.reloadData()
+            self.dismissLoading()
         }
     }
 }
