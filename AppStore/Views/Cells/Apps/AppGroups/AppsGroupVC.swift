@@ -18,9 +18,10 @@ class AppsGroupVC: UIViewController {
     
     // MARK: - Views
     private lazy var collectionView: UICollectionView = {
-        let cv = CollectionView(scrollDirection: .horizontal, showsIndicators: false)
+        let cv = CollectionView(scrollDirection: .horizontal, showsIndicators: false, enableSnap: true)
         cv.register(AppRowCell.self, forCellWithReuseIdentifier: AppRowCell.reuseId)
         cv.backgroundColor = .white
+        cv.contentInset = .init(top: 16, left: 16, bottom: 16, right: 16)
         cv.delegate = self
         cv.dataSource = self
         return cv
@@ -56,7 +57,7 @@ extension AppsGroupVC: UICollectionViewDelegate, UICollectionViewDataSource, UIC
     }
     
     func collectionView(_ collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, sizeForItemAt indexPath: IndexPath) -> CGSize {
-        let width = view.frame.width - (collectionViewSpacings.edgeInset * 2) - collectionViewSpacings.horizontalBetweenSpacing
+        let width = view.frame.width - (collectionViewSpacings.horizontalBetweenSpacing * 4)
         let height = ((view.frame.height - collectionViewSpacings.edgeInset * 2)) / 3 - (collectionViewSpacings.verticalBetweenSpacing * 2)
         return CGSize(width: width, height: height)
     }
@@ -67,9 +68,5 @@ extension AppsGroupVC: UICollectionViewDelegate, UICollectionViewDataSource, UIC
     
     func collectionView(_ collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, minimumInteritemSpacingForSectionAt section: Int) -> CGFloat {
         return collectionViewSpacings.verticalBetweenSpacing
-    }
-    
-    func collectionView(_ collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, insetForSectionAt section: Int) -> UIEdgeInsets {
-        return UIEdgeInsets(top: collectionViewSpacings.edgeInset, left: collectionViewSpacings.edgeInset, bottom: collectionViewSpacings.edgeInset, right: collectionViewSpacings.edgeInset)
     }
 }

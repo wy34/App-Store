@@ -18,9 +18,10 @@ class HeaderVC: UIViewController {
     
     // MARK: - Views
     private lazy var collectionView: UICollectionView = {
-        let cv = CollectionView(scrollDirection: .horizontal, showsIndicators: false)
+        let cv = CollectionView(scrollDirection: .horizontal, showsIndicators: false, enableSnap: true)
         cv.register(HeaderCell.self, forCellWithReuseIdentifier: HeaderCell.reuseId)
         cv.backgroundColor = .white
+        cv.contentInset = .init(top: 16, left: 16, bottom: 16, right: 16)
         cv.delegate = self
         cv.dataSource = self
         return cv
@@ -41,8 +42,8 @@ class HeaderVC: UIViewController {
 
 // MARK: - UICollectionViewDelegate, UICollectionViewDataSource, UICollectionViewDelegateFlowLayout
 extension HeaderVC: UICollectionViewDelegate, UICollectionViewDataSource, UICollectionViewDelegateFlowLayout {
-    var collectionViewSpacings: (horizontalBetweenSpacing: CGFloat, edgeInset: CGFloat) {
-        return (horizontalBetweenSpacing: 10, edgeInset: 16)
+    var horizontalBetweenSpacing: CGFloat {
+        return 10
     }
     
     func collectionView(_ collectionView: UICollectionView, numberOfItemsInSection section: Int) -> Int {
@@ -57,14 +58,12 @@ extension HeaderVC: UICollectionViewDelegate, UICollectionViewDataSource, UIColl
     }
     
     func collectionView(_ collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, sizeForItemAt indexPath: IndexPath) -> CGSize {
-        return CGSize(width: view.frame.width - (collectionViewSpacings.edgeInset * 3), height: view.frame.height)
+        let width = view.frame.width - (horizontalBetweenSpacing * 4)
+        let height = view.frame.height
+        return CGSize(width: width, height: height)
     }
     
     func collectionView(_ collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, minimumLineSpacingForSectionAt section: Int) -> CGFloat {
-        return collectionViewSpacings.horizontalBetweenSpacing
-    }
-    
-    func collectionView(_ collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, insetForSectionAt section: Int) -> UIEdgeInsets {
-        return UIEdgeInsets(top: collectionViewSpacings.edgeInset, left: collectionViewSpacings.edgeInset, bottom: collectionViewSpacings.edgeInset, right: collectionViewSpacings.edgeInset)
+        return horizontalBetweenSpacing
     }
 }
