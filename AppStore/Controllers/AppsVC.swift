@@ -9,6 +9,7 @@ import UIKit
 
 class AppsVC: UIViewController {
     // MARK: - Properties
+    var socialApps = [SocialApp]()
     var appGroups = [AppGroup]()
     
     // MARK: - Views
@@ -22,6 +23,14 @@ class AppsVC: UIViewController {
         return cv
     }()
     
+    private let activityIndicator: UIActivityIndicatorView = {
+        let a = UIActivityIndicatorView()
+        a.style = .large
+        a.startAnimating()
+        a.hidesWhenStopped = true
+        return a
+    }()
+    
     // MARK: - Lifecycle
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -31,9 +40,12 @@ class AppsVC: UIViewController {
     
     // MARK: - Helpers
     func layoutUI() {
-        view.addSubview(collectionView)
+        view.addSubviews(collectionView, activityIndicator)
         collectionView.frame = view.bounds
+        activityIndicator.center(x: view.centerXAnchor, y: view.centerYAnchor)
     }
+    
+    #warning("Create showLoading/dismissLoading method")
     
     func fetchAppGroups() {
         let dispatchGroup = DispatchGroup()
@@ -41,6 +53,18 @@ class AppsVC: UIViewController {
         var editorsChoice: AppGroup?
         var topGrossing: AppGroup?
         var topFree: AppGroup?
+        
+        dispatchGroup.enter()
+        NetworkManager.shared.fetchSocialApps { [weak self] (result) in
+            guard let self = self else { return }
+            dispatchGroup.leave()
+            switch result {
+                case .success(let socialApps):
+                    self.socialApps = socialApps
+                case .failure(let error):
+                    print(error.localizedDescription)
+            }
+        }
         
         dispatchGroup.enter()
         NetworkManager.shared.fetchAppGroup(urlString: "https://rss.itunes.apple.com/api/v1/us/ios-apps/new-games-we-love/all/50/explicit.json") { (result) in
@@ -76,6 +100,8 @@ class AppsVC: UIViewController {
         }
 
         dispatchGroup.notify(queue: .main) {
+            self.activityIndicator.stopAnimating()
+            
             for appGroup in [editorsChoice, topGrossing, topFree] {
                 if let group = appGroup {
                     self.appGroups.append(group)
@@ -90,12 +116,13 @@ class AppsVC: UIViewController {
 // MARK: - UICollectionViewDelegate, UICollectionViewDataSource, UICollectionViewDelegateFlowLayout
 extension AppsVC: UICollectionViewDelegate, UICollectionViewDataSource, UICollectionViewDelegateFlowLayout {
     func collectionView(_ collectionView: UICollectionView, viewForSupplementaryElementOfKind kind: String, at indexPath: IndexPath) -> UICollectionReusableView {
-        let header = collectionView.dequeueReusableSupplementaryView(ofKind: kind, withReuseIdentifier: AppsVCHeaderView.reuseId, for: indexPath)
+        let header = collectionView.dequeueReusableSupplementaryView(ofKind: kind, withReuseIdentifier: AppsVCHeaderView.reuseId, for: indexPath) as! AppsVCHeaderView
+        header.socialApps = socialApps
         return header
     }
     
     func collectionView(_ collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, referenceSizeForHeaderInSection section: Int) -> CGSize {
-        return CGSize(width: view.frame.width, height: 0)
+        return CGSize(width: view.frame.width, height: 300)
     }
     
     func collectionView(_ collectionView: UICollectionView, numberOfItemsInSection section: Int) -> Int {

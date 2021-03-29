@@ -11,6 +11,12 @@ class AppsVCHeaderView: UICollectionReusableView {
     // MARK: - Properties
     static let reuseId = "AppsVCHeaderView"
     
+    var socialApps: [SocialApp]? {
+        didSet {
+            headerVC.socialApps = socialApps
+        }
+    }
+    
     // MARK: - Views
     let headerVC = HeaderVC()
     
@@ -27,7 +33,6 @@ class AppsVCHeaderView: UICollectionReusableView {
     // MARK: - Helper
     func layoutUI() {
         addSubview(headerVC.view)
-        
         headerVC.view.anchor(top: topAnchor, trailing: trailingAnchor, bottom: bottomAnchor, leading: leadingAnchor)
     }
 }

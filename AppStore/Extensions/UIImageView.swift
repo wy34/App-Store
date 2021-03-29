@@ -8,7 +8,7 @@
 import UIKit
 
 extension UIImageView {
-    func downloadImage(from urlString: String) {
+    func setImage(from urlString: String) {
         NetworkManager.shared.downloadImage(withURLString: urlString) { [weak self] (image) in
             guard let self = self else { return }
             guard let image = image else { return }

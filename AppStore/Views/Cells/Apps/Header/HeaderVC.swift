@@ -8,6 +8,14 @@
 import UIKit
 
 class HeaderVC: UIViewController {
+    // MARK: - Properties
+    var socialApps: [SocialApp]? {
+        didSet {
+            guard let _ = socialApps else { return }
+            collectionView.reloadData()
+        }
+    }
+    
     // MARK: - Views
     private lazy var collectionView: UICollectionView = {
         let cv = CollectionView(scrollDirection: .horizontal, showsIndicators: false)
@@ -38,11 +46,13 @@ extension HeaderVC: UICollectionViewDelegate, UICollectionViewDataSource, UIColl
     }
     
     func collectionView(_ collectionView: UICollectionView, numberOfItemsInSection section: Int) -> Int {
-        return 5
+        return socialApps?.count ?? 0
     }
     
     func collectionView(_ collectionView: UICollectionView, cellForItemAt indexPath: IndexPath) -> UICollectionViewCell {
         let cell = collectionView.dequeueReusableCell(withReuseIdentifier: HeaderCell.reuseId, for: indexPath) as! HeaderCell
+        let socialApp = socialApps?[indexPath.item]
+        cell.configureWith(socialApp: socialApp)
         return cell
     }
     

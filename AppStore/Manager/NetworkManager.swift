@@ -39,6 +39,32 @@ class NetworkManager {
         }
     }
     
+    func fetchSocialApps(completion: @escaping (Result<[SocialApp], Error>) -> Void) {
+        let urlString = "https://api.letsbuildthatapp.com/appstore/social"
+        
+        if let url = URL(string: urlString) {
+            URLSession.shared.dataTask(with: url) { (data, response, error) in
+                if let error = error {
+                    completion(.failure(error))
+                }
+                
+                guard let response = response  as? HTTPURLResponse, response.statusCode == 200 else {
+                    completion(.failure(error!))
+                    return
+                }
+                
+                if let data = data {
+                    do {
+                        let socialApps = try JSONDecoder().decode([SocialApp].self, from: data)
+                        completion(.success(socialApps))
+                    } catch {
+                        completion(.failure(error))
+                    }
+                }
+            }.resume()
+        }
+    }
+    
     func fetchAppGroup(urlString: String, completion: @escaping (Result<AppGroup, Error>) -> Void) {
         if let url = URL(string: urlString) {
             URLSession.shared.dataTask(with: url) { (data, response, error) in

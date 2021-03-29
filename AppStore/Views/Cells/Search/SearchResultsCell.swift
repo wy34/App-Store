@@ -57,7 +57,7 @@ class SearchResultsCell: UICollectionViewCell {
     
     func setImages(forApp app: App) {
         appIconImageView.image = nil
-        appIconImageView.downloadImage(from: app.artworkUrl100)
+        appIconImageView.setImage(from: app.artworkUrl100)
         
         for i in 0...2 {
             [screenshot1ImageView, screenshot2ImageView, screenshot3ImageView][i].image = nil
@@ -65,11 +65,11 @@ class SearchResultsCell: UICollectionViewCell {
             if app.screenshotUrls.count > i {
                 switch i {
                     case 0:
-                        screenshot1ImageView.downloadImage(from: app.screenshotUrls[i])
+                        screenshot1ImageView.setImage(from: app.screenshotUrls[i])
                     case 1:
-                        screenshot2ImageView.downloadImage(from: app.screenshotUrls[i])
+                        screenshot2ImageView.setImage(from: app.screenshotUrls[i])
                     default:
-                        screenshot3ImageView.downloadImage(from: app.screenshotUrls[i])
+                        screenshot3ImageView.setImage(from: app.screenshotUrls[i])
                 }
             }
         }

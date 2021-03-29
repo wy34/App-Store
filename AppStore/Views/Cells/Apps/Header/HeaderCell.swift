@@ -21,7 +21,6 @@ class HeaderCell: UICollectionViewCell {
     // MARK: - Init
     override init(frame: CGRect) {
         super.init(frame: frame)
-        imageView.backgroundColor = .red
         layoutUI()
     }
     
@@ -33,5 +32,12 @@ class HeaderCell: UICollectionViewCell {
     func layoutUI() {
         addSubview(stackView)
         stackView.anchor(top: topAnchor, trailing: trailingAnchor, bottom: bottomAnchor, leading: leadingAnchor, padTop: 16)
+    }
+    
+    func configureWith(socialApp: SocialApp?) {
+        guard let socialApp = socialApp else { return }
+        companyLabel.text = socialApp.name
+        titleLabel.text = socialApp.tagline
+        imageView.setImage(from: socialApp.imageUrl)
     }
 }

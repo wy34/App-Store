@@ -45,6 +45,6 @@ class AppRowCell: UICollectionViewCell {
         guard let feedItem = feedItem else { return }
         nameLabel.text = feedItem.name
         companyLabel.text = feedItem.artistName
-        appIconImageView.downloadImage(from: feedItem.artworkUrl100)
+        appIconImageView.setImage(from: feedItem.artworkUrl100)
     }
 }
