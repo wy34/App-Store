@@ -7,6 +7,10 @@
 
 import UIKit
 
+protocol AppsGroupVCDelegate: class {
+    func showAppDetail(app: FeedItem?)
+}
+
 class AppsGroupVC: UIViewController {
     // MARK: - Properties
     var feedItems: [FeedItem]? {
@@ -15,6 +19,8 @@ class AppsGroupVC: UIViewController {
             collectionView.reloadData()
         }
     }
+    
+    weak var delegate: AppsGroupVCDelegate?
     
     // MARK: - Views
     private lazy var collectionView: UICollectionView = {
@@ -54,6 +60,11 @@ extension AppsGroupVC: UICollectionViewDelegate, UICollectionViewDataSource, UIC
         let cell = collectionView.dequeueReusableCell(withReuseIdentifier: AppRowCell.reuseId, for: indexPath) as! AppRowCell
         cell.configureWith(feedItem: feedItems?[indexPath.item])
         return cell
+    }
+    
+    func collectionView(_ collectionView: UICollectionView, didSelectItemAt indexPath: IndexPath) {
+        let feedItem = feedItems?[indexPath.item]
+        delegate?.showAppDetail(app: feedItem)
     }
     
     func collectionView(_ collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, sizeForItemAt indexPath: IndexPath) -> CGSize {

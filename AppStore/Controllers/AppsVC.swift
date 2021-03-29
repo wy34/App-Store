@@ -121,7 +121,7 @@ extension AppsVC: UICollectionViewDelegate, UICollectionViewDataSource, UICollec
     func collectionView(_ collectionView: UICollectionView, cellForItemAt indexPath: IndexPath) -> UICollectionViewCell {
         let cell = collectionView.dequeueReusableCell(withReuseIdentifier: AppsGroupCell.reuseId, for: indexPath) as! AppsGroupCell
         let appGroup = appGroups[indexPath.item]
-        cell.configureWith(appGroup: appGroup)
+        cell.configureWith(appGroup: appGroup, viewController: self)
         return cell
     }
     
@@ -131,5 +131,14 @@ extension AppsVC: UICollectionViewDelegate, UICollectionViewDataSource, UICollec
     
     func collectionView(_ collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, insetForSectionAt section: Int) -> UIEdgeInsets {
         return UIEdgeInsets(top: 16, left: 0, bottom: 0, right: 0)
+    }
+}
+
+// MARK: - AppsGroupVCDelegate
+extension AppsVC: AppsGroupVCDelegate {
+    func showAppDetail(app: FeedItem?) {
+        guard let app = app else { return }
+        let vc = AppDetailVC(app: app)
+        navigationController?.pushViewController(vc, animated: true)
     }
 }

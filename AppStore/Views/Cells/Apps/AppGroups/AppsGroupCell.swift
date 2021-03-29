@@ -33,9 +33,10 @@ class AppsGroupCell: UICollectionViewCell {
         appsHorizontalVC.view.anchor(top: titleLabel.bottomAnchor, trailing: trailingAnchor, bottom: bottomAnchor, leading: leadingAnchor)
     }
     
-    func configureWith(appGroup: AppGroup?) {
+    func configureWith(appGroup: AppGroup?, viewController: AppsGroupVCDelegate) {
         guard let appGroup = appGroup else { return }
         titleLabel.text = appGroup.feed.title
         appsHorizontalVC.feedItems = appGroup.feed.results
+        appsHorizontalVC.delegate = viewController
     }
 }
