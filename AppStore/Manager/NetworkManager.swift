@@ -13,35 +13,7 @@ class NetworkManager {
     let imageCache = NSCache<NSString, UIImage>()
     
     // MARK: - Helpers
-    func fetchSearchResults(searchTerm: String, completion: @escaping (Result<SearchResult, Error>) -> Void) {
-        let urlString = "https://itunes.apple.com/search?term=\(searchTerm)&entity=software"
-        
-        if let url = URL(string: urlString) {
-            URLSession.shared.dataTask(with: url) { (data, response, error) in
-                if let error = error {
-                    completion(.failure(error))
-                }
-                
-                guard let response = response as? HTTPURLResponse, response.statusCode == 200 else {
-                    completion(.failure(error!))
-                    return
-                }
-                
-                if let data = data {
-                    do {
-                        let searchResult = try JSONDecoder().decode(SearchResult.self, from: data)
-                        completion(.success(searchResult))
-                    } catch {
-                        completion(.failure(error))
-                    }
-                }
-            }.resume()
-        }
-    }
-    
-    func fetchSocialApps(completion: @escaping (Result<[SocialApp], Error>) -> Void) {
-        let urlString = "https://api.letsbuildthatapp.com/appstore/social"
-        
+    func fetchApps<T: Codable>(urlString: String, completion: @escaping (Result<T, Error>) -> Void) {
         if let url = URL(string: urlString) {
             URLSession.shared.dataTask(with: url) { (data, response, error) in
                 if let error = error {
@@ -55,32 +27,8 @@ class NetworkManager {
                 
                 if let data = data {
                     do {
-                        let socialApps = try JSONDecoder().decode([SocialApp].self, from: data)
-                        completion(.success(socialApps))
-                    } catch {
-                        completion(.failure(error))
-                    }
-                }
-            }.resume()
-        }
-    }
-    
-    func fetchAppGroup(urlString: String, completion: @escaping (Result<AppGroup, Error>) -> Void) {
-        if let url = URL(string: urlString) {
-            URLSession.shared.dataTask(with: url) { (data, response, error) in
-                if let error = error {
-                    completion(.failure(error))
-                }
-                
-                guard let response = response as? HTTPURLResponse, response.statusCode == 200 else {
-                    completion(.failure(error!))
-                    return
-                }
-                
-                if let data = data {
-                    do {
-                        let appGroup = try JSONDecoder().decode(AppGroup.self, from: data)
-                        completion(.success(appGroup))
+                        let apps = try JSONDecoder().decode(T.self, from: data)
+                        completion(.success(apps))
                     } catch {
                         completion(.failure(error))
                     }

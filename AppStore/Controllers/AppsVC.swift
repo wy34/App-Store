@@ -45,7 +45,7 @@ class AppsVC: LoadingViewController {
         var topFree: AppGroup?
         
         dispatchGroup.enter()
-        NetworkManager.shared.fetchSocialApps { [weak self] (result) in
+        NetworkManager.shared.fetchApps(urlString: URLString.social.rawValue) { [weak self] (result: Result<[SocialApp], Error>) in
             guard let self = self else { return }
             dispatchGroup.leave()
             switch result {
@@ -55,37 +55,37 @@ class AppsVC: LoadingViewController {
                     print(error.localizedDescription)
             }
         }
-        
+     
         dispatchGroup.enter()
-        NetworkManager.shared.fetchAppGroup(urlString: "https://rss.itunes.apple.com/api/v1/us/ios-apps/new-games-we-love/all/50/explicit.json") { (result) in
+        NetworkManager.shared.fetchApps(urlString: URLString.editorChoice.rawValue) { (result: Result<AppGroup, Error>) in
             dispatchGroup.leave()
             switch result {
-                case .success(let appGroup):
-                    editorsChoice = appGroup
-                case .failure(let error):
-                    print(error.localizedDescription)
+            case .success(let appGroup):
+                editorsChoice = appGroup
+            case .failure(let error):
+                print(error.localizedDescription)
             }
         }
         
         dispatchGroup.enter()
-        NetworkManager.shared.fetchAppGroup(urlString: "https://rss.itunes.apple.com/api/v1/us/ios-apps/top-grossing/all/50/explicit.json") { (result) in
+        NetworkManager.shared.fetchApps(urlString: URLString.topGrossing.rawValue) { (result: Result<AppGroup, Error>) in
             dispatchGroup.leave()
             switch result {
-                case .success(let appGroup):
-                    topGrossing = appGroup
-                case .failure(let error):
-                    print(error.localizedDescription)
+            case .success(let appGroup):
+                topGrossing = appGroup
+            case .failure(let error):
+                print(error.localizedDescription)
             }
         }
-
+        
         dispatchGroup.enter()
-        NetworkManager.shared.fetchAppGroup(urlString: "https://rss.itunes.apple.com/api/v1/us/ios-apps/top-free/all/50/explicit.json") { (result) in
+        NetworkManager.shared.fetchApps(urlString: URLString.topFree.rawValue) { (result: Result<AppGroup, Error>) in
             dispatchGroup.leave()
             switch result {
-                case .success(let appGroup):
-                    topFree = appGroup
-                case .failure(let error):
-                    print(error.localizedDescription)
+            case .success(let appGroup):
+                topFree = appGroup
+            case .failure(let error):
+                print(error.localizedDescription)
             }
         }
 

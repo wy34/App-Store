@@ -50,9 +50,9 @@ class SearchVC: LoadingViewController {
     }
     
     fileprivate func fetchSearchedApps(searchTerm: String) {
-        NetworkManager.shared.fetchSearchResults(searchTerm: searchTerm) { [weak self] (result) in
+        NetworkManager.shared.fetchApps(urlString: URLString.searchUrl(searchTerm: searchTerm)) { [weak self] (result: Result<SearchResult, Error>) in
             guard let self = self else { return }
-            
+
             switch result {
                 case .success(let searchResult):
                     self.searchedApps = searchResult.results
