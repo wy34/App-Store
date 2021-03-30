@@ -17,6 +17,7 @@ struct Feed: Codable {
 }
 
 struct FeedItem: Codable {
+    let id: String
     let artistName: String
     let name: String
     let artworkUrl100: String

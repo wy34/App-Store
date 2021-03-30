@@ -16,5 +16,9 @@ enum URLString: String {
     static func searchUrl(searchTerm: String) -> String {
         return "https://itunes.apple.com/search?term=\(searchTerm)&entity=software"
     }
+    
+    static func appDetailUrl(id: String) -> String {
+        return "https://itunes.apple.com/lookup?id=\(id)"
+    }
 }
 

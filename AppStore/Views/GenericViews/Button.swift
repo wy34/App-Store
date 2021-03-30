@@ -17,13 +17,13 @@ class Button: UIButton {
         fatalError("init(coder:) has not been implemented")
     }
     
-    init(title: String) {
+    init(title: String, textColor: UIColor, font: UIFont, bgColor: UIColor) {
         super.init(frame: .zero)
         self.init(type: .system)
         setTitle(title, for: .normal)
-        setTitleColor(.systemBlue, for: .normal)
-        titleLabel?.font = .boldSystemFont(ofSize: 14)
-        backgroundColor = UIColor(white: 0.9, alpha: 1)
+        setTitleColor(textColor, for: .normal)
+        titleLabel?.font = font
+        backgroundColor = bgColor
         layer.cornerRadius = 16
     }
 }

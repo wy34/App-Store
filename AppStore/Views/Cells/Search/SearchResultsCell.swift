@@ -18,7 +18,7 @@ class SearchResultsCell: UICollectionViewCell {
     private let ratingLabel = Label(text: "9.26M")
     private lazy var labelStackView = StackView(views: [nameLabel, categoryLabel, ratingLabel], axis: .vertical)
  
-    private let getButton = Button(title: "GET")
+    private let getButton = Button(title: "GET", textColor: .systemBlue, font: .boldSystemFont(ofSize: 14), bgColor: #colorLiteral(red: 0.9146333933, green: 0.9102825522, blue: 0.9179967046, alpha: 1))
     
     private lazy var topInfoStackView = StackView(views: [appIconImageView, labelStackView, getButton], spacing: 12, alignment: .center)
     
