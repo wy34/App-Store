@@ -15,6 +15,7 @@ class AppDetailVC: UIViewController {
     private lazy var collectionView: UICollectionView = {
         let cv = CollectionView(showsIndicators: false)
         cv.register(AppDetailCell.self, forCellWithReuseIdentifier: AppDetailCell.reuseId)
+        cv.register(PreviewCell.self, forCellWithReuseIdentifier: PreviewCell.reuseId)
         cv.backgroundColor = .white
         cv.delegate = self
         cv.dataSource = self
@@ -62,23 +63,33 @@ class AppDetailVC: UIViewController {
 // MARK: - UICollectionViewDelegate, UICollectionViewDataSource, UICollectionViewDelegateFlowLayout
 extension AppDetailVC: UICollectionViewDelegate, UICollectionViewDataSource, UICollectionViewDelegateFlowLayout {
     func collectionView(_ collectionView: UICollectionView, numberOfItemsInSection section: Int) -> Int {
-        return 1
+        return 2
     }
     
     func collectionView(_ collectionView: UICollectionView, cellForItemAt indexPath: IndexPath) -> UICollectionViewCell {
-        let cell = collectionView.dequeueReusableCell(withReuseIdentifier: AppDetailCell.reuseId, for: indexPath) as! AppDetailCell
+        if indexPath.item == 0 {
+            let cell = collectionView.dequeueReusableCell(withReuseIdentifier: AppDetailCell.reuseId, for: indexPath) as! AppDetailCell
+            cell.configureWith(app: app)
+            return cell
+        }
+        
+        let cell = collectionView.dequeueReusableCell(withReuseIdentifier: PreviewCell.reuseId, for: indexPath) as! PreviewCell
         cell.configureWith(app: app)
         return cell
     }
     
     func collectionView(_ collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, sizeForItemAt indexPath: IndexPath) -> CGSize {
-        let dummyCell = AppDetailCell(frame: .init(x: 0, y: 0, width: view.frame.width, height: 1000))
+        if indexPath.item == 0 {
+            let dummyCell = AppDetailCell(frame: .init(x: 0, y: 0, width: view.frame.width, height: 1000))
+            
+            dummyCell.configureWith(app: app)
+            dummyCell.layoutIfNeeded()
+            
+            let estimatedSize = dummyCell.systemLayoutSizeFitting(.init(width: view.frame.width, height: 1000))
+            return CGSize(width: view.frame.width, height: estimatedSize.height)
+        }
         
-        dummyCell.configureWith(app: app)
-        dummyCell.layoutIfNeeded()
-        
-        let estimatedSize = dummyCell.systemLayoutSizeFitting(.init(width: view.frame.width, height: 1000))
-        return CGSize(width: view.frame.width, height: estimatedSize.height)
+        return .init(width: view.frame.width, height: 500)
     }
 }
 

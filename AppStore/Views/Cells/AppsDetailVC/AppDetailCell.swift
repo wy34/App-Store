@@ -31,13 +31,6 @@ class AppDetailCell: UICollectionViewCell {
     // MARK: - Init
     override init(frame: CGRect) {
         super.init(frame: frame)
-//        backgroundColor = .purple
-//        artistLabel.backgroundColor = .orange
-//        nameLabel.backgroundColor = .red
-//        appIconImageView.backgroundColor = .blue
-//        whatsNewLabel.backgroundColor = .yellow
-//        versionLabel.backgroundColor = .blue
-//        releaseNotesLabel.backgroundColor = .green
         layoutUI()
     }
     

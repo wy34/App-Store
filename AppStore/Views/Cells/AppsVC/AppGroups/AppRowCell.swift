@@ -12,7 +12,7 @@ class AppRowCell: UICollectionViewCell {
     static let reuseId = "AppRowCell"
     
     // MARK: - Views
-    private let appIconImageView = ImageView(cornerRadius: 8)
+    private let appIconImageView = ImageView(cornerRadius: 12)
     
     private let nameLabel = Label(text: "App Name", font: .boldSystemFont(ofSize: 16))
     private let companyLabel = Label(text: "Company Name", font: .systemFont(ofSize: 12))

@@ -13,6 +13,7 @@ class AppsVCHeaderView: UICollectionReusableView {
     
     var socialApps: [SocialApp]? {
         didSet {
+            guard let _  = socialApps else { return }
             headerVC.socialApps = socialApps
         }
     }

@@ -58,7 +58,7 @@ class SearchVC: LoadingViewController {
                     self.searchedApps = searchResult.results
                     DispatchQueue.main.async { self.collectionView.reloadData() }
                 case .failure(let error):
-                    print(error.localizedDescription)
+                    print(error)
             }
         }
     }
