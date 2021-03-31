@@ -19,6 +19,12 @@ struct Entry: Codable {
     var author: Author
     var title: ReviewContent
     var content: ReviewContent
+    var rating: ReviewContent
+    
+    enum CodingKeys: String, CodingKey {
+        case author, title, content
+        case rating = "im:rating"
+    }
 }
 
 struct Author: Codable {
