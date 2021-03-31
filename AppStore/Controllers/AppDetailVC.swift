@@ -25,10 +25,10 @@ class AppDetailVC: UIViewController {
     }()
     
     // MARK: - Init
-    init(app: FeedItem) {
+    init(id: String) {
         super.init(nibName: nil, bundle: nil)
         navigationItem.largeTitleDisplayMode = .never
-        fetchAppDetails(id: app.id)
+        fetchAppDetails(id: id)
     }
     
     required init?(coder: NSCoder) {

@@ -138,7 +138,7 @@ extension AppsVC: UICollectionViewDelegate, UICollectionViewDataSource, UICollec
 extension AppsVC: AppsGroupVCDelegate {
     func showAppDetail(app: FeedItem?) {
         guard let app = app else { return }
-        let vc = AppDetailVC(app: app)
+        let vc = AppDetailVC(id: app.id)
         navigationController?.pushViewController(vc, animated: true)
     }
 }

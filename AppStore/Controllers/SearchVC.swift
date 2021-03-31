@@ -79,6 +79,12 @@ extension SearchVC: UICollectionViewDataSource, UICollectionViewDelegateFlowLayo
     func collectionView(_ collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, sizeForItemAt indexPath: IndexPath) -> CGSize {
         return CGSize(width: view.frame.width, height: 350)
     }
+    
+    func collectionView(_ collectionView: UICollectionView, didSelectItemAt indexPath: IndexPath) {
+        let app = searchedApps[indexPath.item]
+        let vc = AppDetailVC(id: String(app.trackId))
+        navigationController?.pushViewController(vc, animated: true)
+    }
 }
 
 // MARK: - UISearchBarDelegate

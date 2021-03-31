@@ -13,6 +13,7 @@ struct SearchResult: Codable {
 }
 
 struct App: Codable {
+    let trackId: Int
     let trackName: String
     let primaryGenreName: String
     var averageUserRating: Float?
