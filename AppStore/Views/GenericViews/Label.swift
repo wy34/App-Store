@@ -29,10 +29,11 @@ class Label: UILabel {
         self.font = font
     }
     
-    init(text: String, textColor: UIColor, font: UIFont) {
+    init(text: String, textColor: UIColor, alignment: NSTextAlignment = .left, font: UIFont) {
         super.init(frame: .zero)
         self.text = text
         self.textColor = textColor
+        self.textAlignment = alignment
         self.font = font
     }
     

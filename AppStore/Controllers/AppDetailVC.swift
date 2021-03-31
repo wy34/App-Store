@@ -10,12 +10,14 @@ import UIKit
 class AppDetailVC: UIViewController {
     // MARK: - Properties
     var app: App?
+    var reviews: Reviews?
  
     // MARK: - Views
     private lazy var collectionView: UICollectionView = {
         let cv = CollectionView(showsIndicators: false)
         cv.register(AppDetailCell.self, forCellWithReuseIdentifier: AppDetailCell.reuseId)
         cv.register(PreviewCell.self, forCellWithReuseIdentifier: PreviewCell.reuseId)
+        cv.register(ReviewsCell.self, forCellWithReuseIdentifier: ReviewsCell.reuseId)
         cv.backgroundColor = .white
         cv.delegate = self
         cv.dataSource = self
@@ -57,13 +59,25 @@ class AppDetailVC: UIViewController {
                     print(error.localizedDescription)
             }
         }
+        
+        NetworkManager.shared.fetchApps(urlString: URLString.appReviewsUrl(id: id)) { [weak self] (result: Result<Reviews, Error>) in
+            guard let self = self else { return }
+            
+            switch result {
+                case .success(let reviews):
+                    self.reviews = reviews
+                    DispatchQueue.main.async { self.collectionView.reloadData() }
+                case .failure(let error):
+                    print(error)
+            }
+        }
     }
 }
 
 // MARK: - UICollectionViewDelegate, UICollectionViewDataSource, UICollectionViewDelegateFlowLayout
 extension AppDetailVC: UICollectionViewDelegate, UICollectionViewDataSource, UICollectionViewDelegateFlowLayout {
     func collectionView(_ collectionView: UICollectionView, numberOfItemsInSection section: Int) -> Int {
-        return 2
+        return 3
     }
     
     func collectionView(_ collectionView: UICollectionView, cellForItemAt indexPath: IndexPath) -> UICollectionViewCell {
@@ -71,25 +85,31 @@ extension AppDetailVC: UICollectionViewDelegate, UICollectionViewDataSource, UIC
             let cell = collectionView.dequeueReusableCell(withReuseIdentifier: AppDetailCell.reuseId, for: indexPath) as! AppDetailCell
             cell.configureWith(app: app)
             return cell
+        } else if indexPath.item == 1 {
+            let cell = collectionView.dequeueReusableCell(withReuseIdentifier: PreviewCell.reuseId, for: indexPath) as! PreviewCell
+            cell.configureWith(app: app)
+            return cell
+        } else {
+            let cell = collectionView.dequeueReusableCell(withReuseIdentifier: ReviewsCell.reuseId, for: indexPath) as! ReviewsCell
+            cell.configureWith(reviews: reviews)
+            return cell
         }
-        
-        let cell = collectionView.dequeueReusableCell(withReuseIdentifier: PreviewCell.reuseId, for: indexPath) as! PreviewCell
-        cell.configureWith(app: app)
-        return cell
     }
     
     func collectionView(_ collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, sizeForItemAt indexPath: IndexPath) -> CGSize {
         if indexPath.item == 0 {
             let dummyCell = AppDetailCell(frame: .init(x: 0, y: 0, width: view.frame.width, height: 1000))
-            
+
             dummyCell.configureWith(app: app)
             dummyCell.layoutIfNeeded()
             
             let estimatedSize = dummyCell.systemLayoutSizeFitting(.init(width: view.frame.width, height: 1000))
             return CGSize(width: view.frame.width, height: estimatedSize.height)
+        } else if indexPath.item == 1 {
+            return .init(width: view.frame.width, height: 500)
+        } else {
+            return .init(width: view.frame.width, height: 280)
         }
-        
-        return .init(width: view.frame.width, height: 500)
     }
 }
 
