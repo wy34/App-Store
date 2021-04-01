@@ -39,6 +39,6 @@ class ExpandedVCCell: UITableViewCell {
     // MARK: - Helpers
     func layoutUI() {
         addSubview(descriptionLabel)
-        descriptionLabel.anchor(top: topAnchor, trailing: trailingAnchor, bottom: bottomAnchor, leading: leadingAnchor, padTop: 16, padTrailing: 16, padBottom: 16, padLeading: 16)
+        descriptionLabel.anchor(top: topAnchor, trailing: trailingAnchor, bottom: bottomAnchor, leading: leadingAnchor, padTop: 32, padTrailing: 32, padBottom: 32, padLeading: 32)
     }
 }

@@ -31,5 +31,6 @@ class Button: UIButton {
         super.init(frame: .zero)
         self.init(type: .system)
         setImage(image, for: .normal)
+        tintColor = #colorLiteral(red: 0.2272714972, green: 0.2261967659, blue: 0.2281063497, alpha: 1)
     }
 }

@@ -12,7 +12,7 @@ class ExpandedVCHeaderCell: UITableViewCell {
     static let reuseId = "ExpandedVCHeaderCell"
     
     // MARK: - Views
-    private let headerImageView = ImageView(image: UIImage(named: "ph")!, cornerRadius: 0)
+    private let todayCell = TodayCell()
     
     // MARK: - Init
     override init(style: UITableViewCell.CellStyle, reuseIdentifier: String?) {
@@ -26,7 +26,12 @@ class ExpandedVCHeaderCell: UITableViewCell {
     
     // MARK: - Helpers
     func layoutUI() {
-        addSubviews(headerImageView)
-        headerImageView.anchor(top: topAnchor, trailing: trailingAnchor, bottom: bottomAnchor, leading: leadingAnchor)
+        addSubviews(todayCell)
+        todayCell.anchor(top: topAnchor, trailing: trailingAnchor, bottom: bottomAnchor, leading: leadingAnchor)
+    }
+    
+    func configureWith(item: TodayItem?) {
+        guard let item = item else { return }
+        todayCell.configureWith(item: item)
     }
 }

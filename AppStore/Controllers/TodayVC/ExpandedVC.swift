@@ -7,13 +7,10 @@
 
 import UIKit
 
-protocol ExpandedVCDelegate: class {
-    func dismissExpandedVC()
-}
-
 class ExpandedVC: UIViewController {
     // MARK: - Properties
-    weak var delegate: ExpandedVCDelegate?
+    var todayItem: TodayItem?
+    var dismissHandler: (() -> Void)?
 
     // MARK: - Views
     private lazy var tableView: UITableView = {
@@ -23,20 +20,31 @@ class ExpandedVC: UIViewController {
         tv.backgroundColor = .white
         tv.delegate = self
         tv.dataSource = self
-        tv.contentInsetAdjustmentBehavior = .never
         tv.showsVerticalScrollIndicator = false
         tv.separatorStyle = .none
         tv.tableFooterView = UIView()
+        tv.allowsSelection = false
         return tv
     }()
     
-    private let closeButton = Button(image: UIImage(systemName: "xmark.circle.fill")!.applyingSymbolConfiguration(.init(font: .systemFont(ofSize: 25)))!)
+    private let closeButton = Button(image: UIImage(systemName: "xmark.circle.fill")!.applyingSymbolConfiguration(.init(font: .systemFont(ofSize: 23)))!)
+    
+    // MARK: - Init
+    init(todayItem: TodayItem, dismissHandler: (() -> Void)?) {
+        super.init(nibName: nil, bundle: nil)
+        self.todayItem = todayItem
+        self.dismissHandler = dismissHandler
+        self.tableView.reloadData()
+    }
+    
+    required init?(coder: NSCoder) {
+        fatalError("init(coder:) has not been implemented")
+    }
     
     // MARK: - Lifecycle
     override func viewDidLoad() {
         super.viewDidLoad()
         layoutUI()
-        
         closeButton.addTarget(self, action: #selector(dismissExpandedView), for: .touchUpInside)
     }
     
@@ -57,7 +65,7 @@ class ExpandedVC: UIViewController {
     
     // MARK: - Selector
     @objc func dismissExpandedView() {
-        delegate?.dismissExpandedVC()
+        dismissHandler?()
     }
 }
 
@@ -70,6 +78,7 @@ extension ExpandedVC: UITableViewDelegate, UITableViewDataSource {
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
         if indexPath.row == 0 {
             let cell = tableView.dequeueReusableCell(withIdentifier: ExpandedVCHeaderCell.reuseId, for: indexPath) as! ExpandedVCHeaderCell
+            cell.configureWith(item: todayItem)
             return cell
         } else {
             let cell = tableView.dequeueReusableCell(withIdentifier: ExpandedVCCell.reuseId, for: indexPath) as! ExpandedVCCell

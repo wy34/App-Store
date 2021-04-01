@@ -23,6 +23,7 @@ class ImageView: UIImageView {
         self.tintColor = tintColor
         self.layer.cornerRadius = cornerRadius
         self.clipsToBounds = true
+        self.contentMode = .scaleAspectFill
     }
     
     init(cornerRadius: CGFloat, borderWidth: CGFloat = 0, borderColor: UIColor = .clear) {

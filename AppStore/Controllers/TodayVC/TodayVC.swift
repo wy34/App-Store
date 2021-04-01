@@ -17,10 +17,17 @@ class TodayVC: UIViewController {
     var expandedVCWidthAnchor: NSLayoutConstraint?
     var expandedVCHeightAnchor: NSLayoutConstraint?
     
+    var todayItems = [
+        TodayItem(category: "LIFE HACK", title: "Utilizing your Time", image: UIImage(named: "garden")!, description: "All the tools and apps you need to intelligently organize your life the right way.", backgroundColor: .white),
+        TodayItem(category: "HOLIDAYS", title: "Travel on a Budget", image: UIImage(named: "holiday")!, description: "Findout all you need to know on how to travel without packing everything!", backgroundColor: #colorLiteral(red: 0.9850718379, green: 0.9644803405, blue: 0.7262819409, alpha: 1)),
+        TodayItem(category: "LIFE HACK", title: "Utilizing your Time", image: UIImage(named: "garden")!, description: "All the tools and apps you need to intelligently organize your life the right way.", backgroundColor: .white)
+    ]
+    
     // MARK: - Views
     private lazy var collectionView: UICollectionView = {
         let cv = CollectionView(showsIndicators: false)
         cv.register(TodayCell.self, forCellWithReuseIdentifier: TodayCell.reuseId)
+        cv.backgroundColor = #colorLiteral(red: 0.9269490838, green: 0.9225396514, blue: 0.9303577542, alpha: 1)
         cv.delegate = self
         cv.dataSource = self
         return cv
@@ -47,7 +54,7 @@ class TodayVC: UIViewController {
     }
     
     // MARK: - Selector
-    @objc func handleRemoveRedView() {
+    @objc func handleRemoveExpandedView() {
         UIView.animate(withDuration: 0.7, delay: 0, usingSpringWithDamping: 0.9, initialSpringVelocity: 0.5, options: .curveEaseOut) { [weak self] in
             guard let self = self else { return }
             self.expandedVC?.hideCloseButton()
@@ -71,11 +78,12 @@ class TodayVC: UIViewController {
 // MARK: - UICollectionViewDataSource, UICollectionViewDelegateFlowLayout
 extension TodayVC: UICollectionViewDataSource, UICollectionViewDelegate, UICollectionViewDelegateFlowLayout {
     func collectionView(_ collectionView: UICollectionView, numberOfItemsInSection section: Int) -> Int {
-        return 5
+        return todayItems.count
     }
     
     func collectionView(_ collectionView: UICollectionView, cellForItemAt indexPath: IndexPath) -> UICollectionViewCell {
         let cell = collectionView.dequeueReusableCell(withReuseIdentifier: TodayCell.reuseId, for: indexPath) as! TodayCell
+        cell.configureWith(item: todayItems[indexPath.row])
         return cell
     }
     
@@ -97,8 +105,7 @@ extension TodayVC: UICollectionViewDataSource, UICollectionViewDelegate, UIColle
         self.startingExpandedVCFrame = startingFrame
         self.tappedCell = cell
         
-        expandedVC = ExpandedVC()
-        expandedVC?.delegate = self
+        expandedVC = ExpandedVC(todayItem: todayItems[indexPath.row], dismissHandler: { self.handleRemoveExpandedView() })
         expandedVC?.view.layer.cornerRadius = 16
         expandedVC?.view.clipsToBounds = true
         
@@ -126,12 +133,5 @@ extension TodayVC: UICollectionViewDataSource, UICollectionViewDelegate, UIColle
             
             self.tabBarController?.tabBar.frame.origin.y = self.view.frame.size.height
         }
-    }
-}
-
-// MARK: - ExpandedVCDelegate
-extension TodayVC: ExpandedVCDelegate {
-    func dismissExpandedVC() {
-        handleRemoveRedView()
     }
 }
