@@ -20,7 +20,6 @@ class HeaderVC: UIViewController {
     private lazy var collectionView: UICollectionView = {
         let cv = CollectionView(scrollDirection: .horizontal, showsIndicators: false, enableSnap: true)
         cv.register(HeaderCell.self, forCellWithReuseIdentifier: HeaderCell.reuseId)
-        cv.backgroundColor = .white
         cv.contentInset = .init(top: 16, left: 16, bottom: 16, right: 16)
         cv.delegate = self
         cv.dataSource = self

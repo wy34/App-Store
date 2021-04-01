@@ -17,7 +17,6 @@ class AppsVC: LoadingViewController {
         let cv = CollectionView(showsIndicators: false)
         cv.register(AppsGroupCell.self, forCellWithReuseIdentifier: AppsGroupCell.reuseId)
         cv.register(AppsVCHeaderView.self, forSupplementaryViewOfKind: UICollectionView.elementKindSectionHeader, withReuseIdentifier: AppsVCHeaderView.reuseId)
-        cv.backgroundColor = .white
         cv.delegate = self
         cv.dataSource = self
         return cv
@@ -27,8 +26,14 @@ class AppsVC: LoadingViewController {
     override func viewDidLoad() {
         super.viewDidLoad()
         layoutUI()
-        showLoading()
-        fetchAppGroups()
+    }
+    
+    override func viewWillAppear(_ animated: Bool) {
+        super.viewWillAppear(animated)
+        if appGroups.isEmpty && socialApps.isEmpty {
+            showLoading()
+            fetchAppGroups()
+        }
     }
     
     // MARK: - Helpers

@@ -17,10 +17,12 @@ class ImageView: UIImageView {
         fatalError("init(coder:) has not been implemented")
     }
     
-    init(image: UIImage, tintColor: UIColor) {
+    init(image: UIImage, tintColor: UIColor = .black, cornerRadius: CGFloat = 16) {
         super.init(frame: .zero)
         self.image = image
         self.tintColor = tintColor
+        self.layer.cornerRadius = cornerRadius
+        self.clipsToBounds = true
     }
     
     init(cornerRadius: CGFloat, borderWidth: CGFloat = 0, borderColor: UIColor = .clear) {

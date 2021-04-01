@@ -20,7 +20,6 @@ class PreviewsVC: UIViewController {
     private lazy var collectionView: UICollectionView = {
         let cv = CollectionView(scrollDirection: .horizontal, showsIndicators: false, enableSnap: true)
         cv.register(ScreenshotCell.self, forCellWithReuseIdentifier: ScreenshotCell.reuseId)
-        cv.backgroundColor = .white
         cv.contentInset = .init(top: 16, left: 16, bottom: 16, right: 16)
         cv.delegate = self
         cv.dataSource = self

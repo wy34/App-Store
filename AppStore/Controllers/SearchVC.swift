@@ -16,7 +16,6 @@ class SearchVC: LoadingViewController {
     private lazy var collectionView: UICollectionView = {
         let cv = CollectionView(showsIndicators: false)
         cv.register(SearchResultsCell.self, forCellWithReuseIdentifier: SearchResultsCell.reuseId)
-        cv.backgroundColor = .white
         cv.delegate = self
         cv.dataSource = self
         return cv

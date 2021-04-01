@@ -20,14 +20,16 @@ class CollectionView: UICollectionView {
     init(scrollDirection: UICollectionView.ScrollDirection = .vertical, showsIndicators: Bool = true, enableSnap: Bool = false) {
         let layout = SnappingLayout()
         layout.scrollDirection = scrollDirection
+        
         super.init(frame: .zero, collectionViewLayout: layout)
+        backgroundColor = .white
         showsVerticalScrollIndicator = showsIndicators
         showsHorizontalScrollIndicator = showsIndicators
         decelerationRate = enableSnap ? .fast : .normal
     }
 }
 
-
+// MARK: - CustomFlowLayout
 class SnappingLayout: UICollectionViewFlowLayout {
     override func targetContentOffset(forProposedContentOffset proposedContentOffset: CGPoint, withScrollingVelocity velocity: CGPoint) -> CGPoint {
         guard let collectionView = collectionView else {

@@ -26,7 +26,6 @@ class AppsGroupVC: UIViewController {
     private lazy var collectionView: UICollectionView = {
         let cv = CollectionView(scrollDirection: .horizontal, showsIndicators: false, enableSnap: true)
         cv.register(AppRowCell.self, forCellWithReuseIdentifier: AppRowCell.reuseId)
-        cv.backgroundColor = .white
         cv.contentInset = .init(top: 16, left: 16, bottom: 16, right: 16)
         cv.delegate = self
         cv.dataSource = self

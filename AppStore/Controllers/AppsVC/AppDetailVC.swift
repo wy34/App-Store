@@ -18,7 +18,6 @@ class AppDetailVC: UIViewController {
         cv.register(AppDetailCell.self, forCellWithReuseIdentifier: AppDetailCell.reuseId)
         cv.register(PreviewCell.self, forCellWithReuseIdentifier: PreviewCell.reuseId)
         cv.register(ReviewsCell.self, forCellWithReuseIdentifier: ReviewsCell.reuseId)
-        cv.backgroundColor = .white
         cv.delegate = self
         cv.dataSource = self
         return cv

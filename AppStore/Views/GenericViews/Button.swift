@@ -26,4 +26,10 @@ class Button: UIButton {
         backgroundColor = bgColor
         layer.cornerRadius = 16
     }
+    
+    init(image: UIImage) {
+        super.init(frame: .zero)
+        self.init(type: .system)
+        setImage(image, for: .normal)
+    }
 }
