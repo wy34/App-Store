@@ -21,6 +21,7 @@ class ExpandedVC: UIViewController {
         tv.delegate = self
         tv.dataSource = self
         tv.showsVerticalScrollIndicator = false
+        tv.contentInsetAdjustmentBehavior = .never
         tv.separatorStyle = .none
         tv.tableFooterView = UIView()
         tv.allowsSelection = false
@@ -61,6 +62,11 @@ class ExpandedVC: UIViewController {
     
     func scrollToTop() {
         tableView.contentOffset = .zero
+    }
+    
+    func headerCell() -> TodayCell? {
+        guard let expandedVCHeaderCell = tableView.cellForRow(at: [0, 0]) as? ExpandedVCHeaderCell else { return nil }
+        return expandedVCHeaderCell.todayCell
     }
     
     // MARK: - Selector

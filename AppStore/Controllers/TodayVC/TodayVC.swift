@@ -58,6 +58,7 @@ class TodayVC: UIViewController {
         UIView.animate(withDuration: 0.7, delay: 0, usingSpringWithDamping: 0.9, initialSpringVelocity: 0.5, options: .curveEaseOut) { [weak self] in
             guard let self = self else { return }
             self.expandedVC?.hideCloseButton()
+            self.tappedCell?.setStackViewTopAnchorTo(constant: 32)
 
             self.expandedVCTopAnchor?.constant = self.startingExpandedVCFrame!.origin.y
             self.expandedVCLeadingAnchor?.constant = self.startingExpandedVCFrame!.origin.x
@@ -70,7 +71,7 @@ class TodayVC: UIViewController {
             self.tabBarController?.tabBar.frame.origin.y = self.view.frame.size.height - self.tabBarController!.tabBar.frame.size.height
         } completion: { (_) in
             self.expandedVC?.view.removeFromSuperview()
-            self.tappedCell?.imageView.alpha = 1
+            self.collectionView.isUserInteractionEnabled = true
         }
     }
 }
@@ -100,14 +101,15 @@ extension TodayVC: UICollectionViewDataSource, UICollectionViewDelegate, UIColle
     }
     
     func collectionView(_ collectionView: UICollectionView, didSelectItemAt indexPath: IndexPath) {
-        guard let cell = collectionView.cellForItem(at: indexPath) as? TodayCell else { return }
+        guard let cell = collectionView.cellForItem(at: indexPath) else { return }
         guard let startingFrame = cell.superview?.convert(cell.frame, to: nil) else { return }
-        self.startingExpandedVCFrame = startingFrame
-        self.tappedCell = cell
+        startingExpandedVCFrame = startingFrame
+        collectionView.isUserInteractionEnabled = false
         
         expandedVC = ExpandedVC(todayItem: todayItems[indexPath.row], dismissHandler: { self.handleRemoveExpandedView() })
         expandedVC?.view.layer.cornerRadius = 16
         expandedVC?.view.clipsToBounds = true
+        tappedCell = expandedVC?.headerCell()
         
         addChild(expandedVC!)
         view.addSubview(expandedVC!.view)
@@ -120,11 +122,11 @@ extension TodayVC: UICollectionViewDataSource, UICollectionViewDelegate, UIColle
         expandedVCHeightAnchor = expandedVC?.view.heightAnchor.constraint(equalToConstant: startingFrame.height)
         
         NSLayoutConstraint.activate([expandedVCTopAnchor!, expandedVCLeadingAnchor!, expandedVCWidthAnchor!, expandedVCHeightAnchor!])
-        self.view.layoutIfNeeded()
+        view.layoutIfNeeded()
         
         UIView.animate(withDuration: 0.7, delay: 0, usingSpringWithDamping: 0.9, initialSpringVelocity: 0.5, options: .curveEaseOut) { [weak self] in
             guard let self = self else { return }
-            cell.imageView.alpha = 0
+            self.tappedCell?.setStackViewTopAnchorTo(constant: 64)
             self.expandedVCTopAnchor?.constant = 0
             self.expandedVCLeadingAnchor?.constant = 0
             self.expandedVCWidthAnchor?.constant = self.view.frame.width

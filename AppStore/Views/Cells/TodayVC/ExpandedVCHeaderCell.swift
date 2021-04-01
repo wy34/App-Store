@@ -12,7 +12,7 @@ class ExpandedVCHeaderCell: UITableViewCell {
     static let reuseId = "ExpandedVCHeaderCell"
     
     // MARK: - Views
-    private let todayCell = TodayCell()
+    let todayCell = TodayCell()
     
     // MARK: - Init
     override init(style: UITableViewCell.CellStyle, reuseIdentifier: String?) {
