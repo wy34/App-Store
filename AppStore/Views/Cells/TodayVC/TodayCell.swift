@@ -7,9 +7,8 @@
 
 import UIKit
 
-class TodayCell: UICollectionViewCell {
+class TodayCell: BaseTodayCell {
     // MARK: - Properties
-    static let reuseId = "TodayCell"
     var stackViewTopAnchor: NSLayoutConstraint?
     
     // MARK: - Views
@@ -45,7 +44,7 @@ class TodayCell: UICollectionViewCell {
         imageView.center(x: imageContainerView.centerXAnchor, y: imageContainerView.centerYAnchor)
     }
     
-    func configureWith(item: TodayItem) {
+    override func configureWith(item: TodayItem) {
         categoryLabel.text = item.category
         titleLabel.text = item.title
         imageView.image = item.image

@@ -18,15 +18,17 @@ class TodayVC: UIViewController {
     var expandedVCHeightAnchor: NSLayoutConstraint?
     
     var todayItems = [
-        TodayItem(category: "LIFE HACK", title: "Utilizing your Time", image: UIImage(named: "garden")!, description: "All the tools and apps you need to intelligently organize your life the right way.", backgroundColor: .white),
-        TodayItem(category: "HOLIDAYS", title: "Travel on a Budget", image: UIImage(named: "holiday")!, description: "Findout all you need to know on how to travel without packing everything!", backgroundColor: #colorLiteral(red: 0.9850718379, green: 0.9644803405, blue: 0.7262819409, alpha: 1)),
-        TodayItem(category: "LIFE HACK", title: "Utilizing your Time", image: UIImage(named: "garden")!, description: "All the tools and apps you need to intelligently organize your life the right way.", backgroundColor: .white)
+        TodayItem(category: "LIFE HACK", title: "Utilizing your Time", image: UIImage(named: "garden")!, description: "All the tools and apps you need to intelligently organize your life the right way.", backgroundColor: .white, cellType: .single),
+        TodayItem(category: "THE DAILY LIST", title: "Test-Drive These CarPlay Apps", image: UIImage(named: "holiday")!, description: "", backgroundColor: .white, cellType: .multiple),
+        TodayItem(category: "HOLIDAYS", title: "Travel on a Budget", image: UIImage(named: "holiday")!, description: "Findout all you need to know on how to travel without packing everything!", backgroundColor: #colorLiteral(red: 0.9850718379, green: 0.9644803405, blue: 0.7262819409, alpha: 1), cellType: .single),
+        TodayItem(category: "THE DAILY LIST", title: "Test-Drive These CarPlay Apps", image: UIImage(named: "holiday")!, description: "", backgroundColor: .white, cellType: .multiple)
     ]
     
     // MARK: - Views
     private lazy var collectionView: UICollectionView = {
         let cv = CollectionView(showsIndicators: false)
-        cv.register(TodayCell.self, forCellWithReuseIdentifier: TodayCell.reuseId)
+        cv.register(TodayCell.self, forCellWithReuseIdentifier: TodayItem.CellType.single.rawValue)
+        cv.register(TodayMultipleAppCell.self, forCellWithReuseIdentifier: TodayItem.CellType.multiple.rawValue)
         cv.backgroundColor = #colorLiteral(red: 0.9269490838, green: 0.9225396514, blue: 0.9303577542, alpha: 1)
         cv.delegate = self
         cv.dataSource = self
@@ -83,13 +85,15 @@ extension TodayVC: UICollectionViewDataSource, UICollectionViewDelegate, UIColle
     }
     
     func collectionView(_ collectionView: UICollectionView, cellForItemAt indexPath: IndexPath) -> UICollectionViewCell {
-        let cell = collectionView.dequeueReusableCell(withReuseIdentifier: TodayCell.reuseId, for: indexPath) as! TodayCell
-        cell.configureWith(item: todayItems[indexPath.row])
+        let item = todayItems[indexPath.row]
+        
+        let cell = collectionView.dequeueReusableCell(withReuseIdentifier: item.cellType.rawValue, for: indexPath) as! BaseTodayCell
+        cell.configureWith(item: item)
         return cell
     }
     
     func collectionView(_ collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, sizeForItemAt indexPath: IndexPath) -> CGSize {
-        return .init(width: view.frame.width - 64, height: 450)
+        return .init(width: view.frame.width - 64, height: todayItems[indexPath.row].cellType == .single ? 450 : 500)
     }
     
     func collectionView(_ collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, minimumLineSpacingForSectionAt section: Int) -> CGFloat {
