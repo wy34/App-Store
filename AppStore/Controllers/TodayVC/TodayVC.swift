@@ -146,39 +146,46 @@ extension TodayVC: UICollectionViewDataSource, UICollectionViewDelegate, UIColle
     }
     
     func collectionView(_ collectionView: UICollectionView, didSelectItemAt indexPath: IndexPath) {
-        guard let cell = collectionView.cellForItem(at: indexPath) else { return }
-        guard let startingFrame = cell.superview?.convert(cell.frame, to: nil) else { return }
-        startingExpandedVCFrame = startingFrame
-        collectionView.isUserInteractionEnabled = false
-        
-        expandedVC = ExpandedVC(todayItem: todayItems[indexPath.row], dismissHandler: { self.handleRemoveExpandedView() })
-        expandedVC?.view.layer.cornerRadius = 16
-        expandedVC?.view.clipsToBounds = true
-        tappedCell = expandedVC?.headerCell()
-        
-        addChild(expandedVC!)
-        view.addSubview(expandedVC!.view)
-        expandedVC!.didMove(toParent: self)
-        
-        expandedVC?.view.translatesAutoresizingMaskIntoConstraints = false
-        expandedVCTopAnchor = expandedVC?.view.topAnchor.constraint(equalTo: view.topAnchor, constant: startingFrame.origin.y)
-        expandedVCLeadingAnchor = expandedVC?.view.leadingAnchor.constraint(equalTo: view.leadingAnchor, constant: startingFrame.origin.x)
-        expandedVCWidthAnchor = expandedVC?.view.widthAnchor.constraint(equalToConstant: startingFrame.width)
-        expandedVCHeightAnchor = expandedVC?.view.heightAnchor.constraint(equalToConstant: startingFrame.height)
-        
-        NSLayoutConstraint.activate([expandedVCTopAnchor!, expandedVCLeadingAnchor!, expandedVCWidthAnchor!, expandedVCHeightAnchor!])
-        view.layoutIfNeeded()
-        
-        UIView.animate(withDuration: 0.7, delay: 0, usingSpringWithDamping: 0.9, initialSpringVelocity: 0.5, options: .curveEaseOut) { [weak self] in
-            guard let self = self else { return }
-            self.tappedCell?.setStackViewTopAnchorTo(constant: 64)
-            self.expandedVCTopAnchor?.constant = 0
-            self.expandedVCLeadingAnchor?.constant = 0
-            self.expandedVCWidthAnchor?.constant = self.view.frame.width
-            self.expandedVCHeightAnchor?.constant = self.view.frame.height
-            self.view.layoutIfNeeded()
+        if todayItems[indexPath.item].cellType == .multiple {
+            let multipleAppsVC = MultipleAppsVC(mode: .fullscreen)
+            multipleAppsVC.modalPresentationStyle = .fullScreen
+            multipleAppsVC.results = todayItems[indexPath.item].apps
+            present(multipleAppsVC, animated: true, completion: nil)
+        } else {
+            guard let cell = collectionView.cellForItem(at: indexPath) else { return }
+            guard let startingFrame = cell.superview?.convert(cell.frame, to: nil) else { return }
+            startingExpandedVCFrame = startingFrame
+            collectionView.isUserInteractionEnabled = false
             
-            self.tabBarController?.tabBar.frame.origin.y = self.view.frame.size.height
+            expandedVC = ExpandedVC(todayItem: todayItems[indexPath.row], dismissHandler: { self.handleRemoveExpandedView() })
+            expandedVC?.view.layer.cornerRadius = 16
+            expandedVC?.view.clipsToBounds = true
+            tappedCell = expandedVC?.headerCell()
+            
+            addChild(expandedVC!)
+            view.addSubview(expandedVC!.view)
+            expandedVC!.didMove(toParent: self)
+            
+            expandedVC?.view.translatesAutoresizingMaskIntoConstraints = false
+            expandedVCTopAnchor = expandedVC?.view.topAnchor.constraint(equalTo: view.topAnchor, constant: startingFrame.origin.y)
+            expandedVCLeadingAnchor = expandedVC?.view.leadingAnchor.constraint(equalTo: view.leadingAnchor, constant: startingFrame.origin.x)
+            expandedVCWidthAnchor = expandedVC?.view.widthAnchor.constraint(equalToConstant: startingFrame.width)
+            expandedVCHeightAnchor = expandedVC?.view.heightAnchor.constraint(equalToConstant: startingFrame.height)
+            
+            NSLayoutConstraint.activate([expandedVCTopAnchor!, expandedVCLeadingAnchor!, expandedVCWidthAnchor!, expandedVCHeightAnchor!])
+            view.layoutIfNeeded()
+            
+            UIView.animate(withDuration: 0.7, delay: 0, usingSpringWithDamping: 0.9, initialSpringVelocity: 0.5, options: .curveEaseOut) { [weak self] in
+                guard let self = self else { return }
+                self.tappedCell?.setStackViewTopAnchorTo(constant: 64)
+                self.expandedVCTopAnchor?.constant = 0
+                self.expandedVCLeadingAnchor?.constant = 0
+                self.expandedVCWidthAnchor?.constant = self.view.frame.width
+                self.expandedVCHeightAnchor?.constant = self.view.frame.height
+                self.view.layoutIfNeeded()
+                
+                self.tabBarController?.tabBar.frame.origin.y = self.view.frame.size.height
+            }
         }
     }
 }

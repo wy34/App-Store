@@ -13,7 +13,7 @@ class TodayMultipleAppCell: BaseTodayCell {
     // MARK: - Views
     private let categoryLabel = Label(text: "LIFE HACK", font: .boldSystemFont(ofSize: 20))
     private let titleLabel = Label(text: "Utilizing your Time", font: .boldSystemFont(ofSize: 26), numberOfLines: 2)
-    private let multipleAppsVC = MultipleAppsVC()
+    private let multipleAppsVC = MultipleAppsVC(mode: .small)
     
     private lazy var stackView = StackView(views: [categoryLabel, titleLabel, multipleAppsVC.view], axis: .vertical, spacing: 8)
     
