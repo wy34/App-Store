@@ -38,5 +38,6 @@ class TodayMultipleAppCell: BaseTodayCell {
         categoryLabel.text = item.category
         titleLabel.text = item.title
         backgroundColor = item.backgroundColor
+        multipleAppsVC.results = item.apps
     }
 }

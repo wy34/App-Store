@@ -10,7 +10,11 @@ import UIKit
 
 class MultipleAppsVC: UIViewController {
     // MARK: - Properties
-    var results: [FeedItem]?
+    var results: [FeedItem]? {
+        didSet {
+            self.collectionView.reloadData()
+        }
+    }
     
     // MARK: - Views
     private lazy var collectionView: UICollectionView = {
@@ -27,26 +31,12 @@ class MultipleAppsVC: UIViewController {
     override func viewDidLoad() {
         super.viewDidLoad()
         layoutUI()
-        fetchApps()
     }
 
     // MARK: - Helpers
     private func layoutUI() {
         view.addSubview(collectionView)
         collectionView.anchor(top: view.topAnchor, trailing: view.trailingAnchor, bottom: view.bottomAnchor, leading: view.leadingAnchor, padTop: 10)
-    }
-    
-    func fetchApps() {
-        NetworkManager.shared.fetchApps(urlString: URLString.editorChoice.rawValue) { [weak self] (result: Result<AppGroup, Error>) in
-            guard let self = self else { return }
-            switch result {
-                case .success(let appGroup):
-                    self.results = appGroup.feed.results
-                    DispatchQueue.main.async { self.collectionView.reloadData() }
-                case .failure(let error):
-                    print(error)
-            }
-        }
     }
 }
 
@@ -58,7 +48,7 @@ extension MultipleAppsVC: UICollectionViewDataSource, UICollectionViewDelegateFl
     
     func collectionView(_ collectionView: UICollectionView, cellForItemAt indexPath: IndexPath) -> UICollectionViewCell {
         let cell = collectionView.dequeueReusableCell(withReuseIdentifier: MultipleCell.reuseId, for: indexPath) as! MultipleCell
-        cell.configureWith(feedItem: results?.shuffled()[indexPath.item])
+        cell.configureWith(feedItem: results?[indexPath.item])
         return cell
     }
     

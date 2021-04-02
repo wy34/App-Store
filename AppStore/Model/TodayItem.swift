@@ -14,6 +14,7 @@ struct TodayItem {
     let description: String
     let backgroundColor: UIColor
     let cellType: CellType
+    let apps: [FeedItem]
     
     enum CellType: String {
         case single, multiple

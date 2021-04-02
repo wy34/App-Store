@@ -8,7 +8,7 @@
 import UIKit
 
 
-class TodayVC: UIViewController {
+class TodayVC: LoadingViewController {
     // MARK: - Properties
     var startingExpandedVCFrame: CGRect?
     
@@ -17,12 +17,7 @@ class TodayVC: UIViewController {
     var expandedVCWidthAnchor: NSLayoutConstraint?
     var expandedVCHeightAnchor: NSLayoutConstraint?
     
-    var todayItems = [
-        TodayItem(category: "LIFE HACK", title: "Utilizing your Time", image: UIImage(named: "garden")!, description: "All the tools and apps you need to intelligently organize your life the right way.", backgroundColor: .white, cellType: .single),
-        TodayItem(category: "THE DAILY LIST", title: "Test-Drive These CarPlay Apps", image: UIImage(named: "holiday")!, description: "", backgroundColor: .white, cellType: .multiple),
-        TodayItem(category: "HOLIDAYS", title: "Travel on a Budget", image: UIImage(named: "holiday")!, description: "Findout all you need to know on how to travel without packing everything!", backgroundColor: #colorLiteral(red: 0.9850718379, green: 0.9644803405, blue: 0.7262819409, alpha: 1), cellType: .single),
-        TodayItem(category: "THE DAILY LIST", title: "Test-Drive These CarPlay Apps", image: UIImage(named: "holiday")!, description: "", backgroundColor: .white, cellType: .multiple)
-    ]
+    var todayItems: [TodayItem] = []
     
     // MARK: - Views
     private lazy var collectionView: UICollectionView = {
@@ -42,6 +37,7 @@ class TodayVC: UIViewController {
     override func viewDidLoad() {
         super.viewDidLoad()
         layoutUI()
+        fetchApps()
     }
     
     override func viewWillAppear(_ animated: Bool) {
@@ -53,6 +49,51 @@ class TodayVC: UIViewController {
     func layoutUI() {
         view.addSubview(collectionView)
         collectionView.anchor(top: view.topAnchor, trailing: view.trailingAnchor, bottom: view.bottomAnchor, leading: view.leadingAnchor)
+    }
+    
+    func fetchApps() {
+        showLoading()
+
+        let dispatchGroup = DispatchGroup()
+        
+        var topGrossing: AppGroup?
+        var editorsChoice: AppGroup?
+        
+        dispatchGroup.enter()
+        NetworkManager.shared.fetchApps(urlString: URLString.topGrossing.rawValue) { (result: Result<AppGroup, Error>) in
+            dispatchGroup.leave()
+            
+            switch result {
+                case .success(let appGroup):
+                    topGrossing = appGroup
+                case .failure(let error):
+                    print(error)
+            }
+        }
+        
+        dispatchGroup.enter()
+        NetworkManager.shared.fetchApps(urlString: URLString.editorChoice.rawValue) { (result: Result<AppGroup, Error>) in
+            dispatchGroup.leave()
+            
+            switch result {
+                case .success(let appGroup):
+                    editorsChoice = appGroup
+                case .failure(let error):
+                    print(error)
+            }
+        }
+        
+        dispatchGroup.notify(queue: .main) {
+            self.todayItems = [
+                TodayItem(category: "Daily List", title: topGrossing?.feed.title ?? "", image: UIImage(named: "holiday")!, description: "", backgroundColor: .white, cellType: .multiple, apps: topGrossing?.feed.results ?? []),
+                TodayItem(category: "Daily List", title: editorsChoice?.feed.title ?? "", image: UIImage(named: "holiday")!, description: "", backgroundColor: .white, cellType: .multiple, apps: editorsChoice?.feed.results ?? []),
+                TodayItem(category: "LIFE HACK", title: "Utilizing your Time", image: UIImage(named: "garden")!, description: "All the tools and apps you need to intelligently organize your life the right way.", backgroundColor: .white, cellType: .single, apps: []),
+                TodayItem(category: "HOLIDAYS", title: "Travel on a Budget", image: UIImage(named: "holiday")!, description: "Findout all you need to know on how to travel without packing everything!", backgroundColor: #colorLiteral(red: 0.9850718379, green: 0.9644803405, blue: 0.7262819409, alpha: 1), cellType: .single, apps: [])
+            ]
+            
+            self.collectionView.reloadData()
+            self.dismissLoading()
+        }
     }
     
     // MARK: - Selector
