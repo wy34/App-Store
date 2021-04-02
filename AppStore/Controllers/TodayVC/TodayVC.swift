@@ -117,6 +117,26 @@ class TodayVC: LoadingViewController {
             self.collectionView.isUserInteractionEnabled = true
         }
     }
+    
+    @objc func handleCellTapped(gesture: UIGestureRecognizer) {
+        let collectionView = gesture.view
+
+        var superView = collectionView?.superview
+
+        while superView != nil {
+            if let cell = superView as? TodayMultipleAppCell {
+                guard let indexPath = self.collectionView.indexPath(for: cell) else { return }
+                let multipleAppsVC = MultipleAppsVC(mode: .fullscreen)
+                multipleAppsVC.results = self.todayItems[indexPath.item].apps
+                let navController = UINavigationController(rootViewController: multipleAppsVC)
+                navController.modalPresentationStyle = .fullScreen
+                present(navController, animated: true, completion: nil)
+                return
+            }
+
+            superView = superView?.superview
+        }
+    }
 }
 
 // MARK: - UICollectionViewDataSource, UICollectionViewDelegateFlowLayout
@@ -129,6 +149,7 @@ extension TodayVC: UICollectionViewDataSource, UICollectionViewDelegate, UIColle
         let item = todayItems[indexPath.row]
         
         let cell = collectionView.dequeueReusableCell(withReuseIdentifier: item.cellType.rawValue, for: indexPath) as! BaseTodayCell
+        (cell as? TodayMultipleAppCell)?.multipleAppsVC.collectionView.addGestureRecognizer(UITapGestureRecognizer(target: self, action: #selector(handleCellTapped(gesture:))))
         cell.configureWith(item: item)
         return cell
     }
@@ -148,9 +169,10 @@ extension TodayVC: UICollectionViewDataSource, UICollectionViewDelegate, UIColle
     func collectionView(_ collectionView: UICollectionView, didSelectItemAt indexPath: IndexPath) {
         if todayItems[indexPath.item].cellType == .multiple {
             let multipleAppsVC = MultipleAppsVC(mode: .fullscreen)
-            multipleAppsVC.modalPresentationStyle = .fullScreen
             multipleAppsVC.results = todayItems[indexPath.item].apps
-            present(multipleAppsVC, animated: true, completion: nil)
+            let navController = UINavigationController(rootViewController: multipleAppsVC)
+            navController.modalPresentationStyle = .fullScreen
+            present(navController, animated: true, completion: nil)
         } else {
             guard let cell = collectionView.cellForItem(at: indexPath) else { return }
             guard let startingFrame = cell.superview?.convert(cell.frame, to: nil) else { return }

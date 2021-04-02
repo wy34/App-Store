@@ -40,6 +40,11 @@ class AppDetailVC: UIViewController {
         layoutUI()
     }
     
+    override func viewWillAppear(_ animated: Bool) {
+        super.viewWillAppear(animated)
+        navigationController?.isNavigationBarHidden = false
+    }
+    
     // MARK: - Helper
     func layoutUI() {
         view.addSubview(collectionView)

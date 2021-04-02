@@ -22,7 +22,7 @@ class MultipleAppsVC: UIViewController {
     var mode: Mode?
     
     // MARK: - Views
-    private lazy var collectionView: UICollectionView = {
+    lazy var collectionView: UICollectionView = {
         let cv = CollectionView(showsIndicators: false)
         cv.register(MultipleCell.self, forCellWithReuseIdentifier: MultipleCell.reuseId)
         cv.backgroundColor = .white
@@ -52,13 +52,18 @@ class MultipleAppsVC: UIViewController {
         closeButton.addTarget(self, action: #selector(dismissMultipleAppsVC), for: .touchUpInside)
     }
 
+    override func viewWillAppear(_ animated: Bool) {
+        super.viewWillAppear(animated)
+        navigationController?.isNavigationBarHidden = true
+    }
+    
     override var prefersStatusBarHidden: Bool { return true }
     
     // MARK: - Helpers
     private func layoutUI() {
         view.addSubviews(collectionView, closeButton)
-        collectionView.anchor(top: view.topAnchor, trailing: view.trailingAnchor, bottom: view.bottomAnchor, leading: view.leadingAnchor, padTop: 10)
-        closeButton.anchor(top: view.topAnchor, trailing: view.trailingAnchor, padTop: 45, padTrailing: 20)
+        collectionView.anchor(top: view.topAnchor, trailing: view.trailingAnchor, bottom: view.bottomAnchor, leading: view.leadingAnchor)
+        closeButton.anchor(top: view.topAnchor, trailing: view.trailingAnchor, padTop: 25, padTrailing: 22)
     }
     
     // MARK: - Selectors
@@ -77,6 +82,11 @@ extension MultipleAppsVC: UICollectionViewDataSource, UICollectionViewDelegateFl
         let cell = collectionView.dequeueReusableCell(withReuseIdentifier: MultipleCell.reuseId, for: indexPath) as! MultipleCell
         cell.configureWith(feedItem: results?[indexPath.item])
         return cell
+    }
+    
+    func collectionView(_ collectionView: UICollectionView, didSelectItemAt indexPath: IndexPath) {
+        let vc = AppDetailVC(id: results?[indexPath.item].id ?? "")
+        navigationController?.pushViewController(vc, animated: true)
     }
     
     func collectionView(_ collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, sizeForItemAt indexPath: IndexPath) -> CGSize {
