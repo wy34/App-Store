@@ -85,15 +85,74 @@ class TodayVC: LoadingViewController {
         
         dispatchGroup.notify(queue: .main) {
             self.todayItems = [
+                TodayItem(category: "LIFE HACK", title: "Utilizing your Time", image: UIImage(named: "garden")!, description: "All the tools and apps you need to intelligently organize your life the right way.", backgroundColor: .white, cellType: .single, apps: []),
                 TodayItem(category: "Daily List", title: topGrossing?.feed.title ?? "", image: UIImage(named: "holiday")!, description: "", backgroundColor: .white, cellType: .multiple, apps: topGrossing?.feed.results ?? []),
                 TodayItem(category: "Daily List", title: editorsChoice?.feed.title ?? "", image: UIImage(named: "holiday")!, description: "", backgroundColor: .white, cellType: .multiple, apps: editorsChoice?.feed.results ?? []),
-                TodayItem(category: "LIFE HACK", title: "Utilizing your Time", image: UIImage(named: "garden")!, description: "All the tools and apps you need to intelligently organize your life the right way.", backgroundColor: .white, cellType: .single, apps: []),
                 TodayItem(category: "HOLIDAYS", title: "Travel on a Budget", image: UIImage(named: "holiday")!, description: "Findout all you need to know on how to travel without packing everything!", backgroundColor: #colorLiteral(red: 0.9850718379, green: 0.9644803405, blue: 0.7262819409, alpha: 1), cellType: .single, apps: [])
             ]
             
             self.collectionView.reloadData()
             self.dismissLoading()
         }
+    }
+    
+    func showDailyListFullScreen(indexPath: IndexPath) {
+        let multipleAppsVC = MultipleAppsVC(mode: .fullscreen)
+        multipleAppsVC.results = todayItems[indexPath.item].apps
+        let navController = UINavigationController(rootViewController: multipleAppsVC)
+        navController.modalPresentationStyle = .fullScreen
+        present(navController, animated: true, completion: nil)
+    }
+    
+    func expandedVCFullScreenSetup(indexPath: IndexPath) {
+        guard let cell = collectionView.cellForItem(at: indexPath) else { return }
+        guard let startingFrame = cell.superview?.convert(cell.frame, to: nil) else { return }
+        startingExpandedVCFrame = startingFrame
+        collectionView.isUserInteractionEnabled = false
+    }
+    
+    func layoutExpandedVC(indexPath: IndexPath) {
+        guard let startingExpandedVCFrame = self.startingExpandedVCFrame else { return }
+        expandedVC = ExpandedVC(todayItem: todayItems[indexPath.row], dismissHandler: { self.handleRemoveExpandedView() })
+        expandedVC?.view.layer.cornerRadius = 16
+        expandedVC?.view.clipsToBounds = true
+        tappedCell = expandedVC?.headerCell()
+        
+        addChild(expandedVC!)
+        view.addSubview(expandedVC!.view)
+        expandedVC!.didMove(toParent: self)
+        
+        expandedVC?.view.translatesAutoresizingMaskIntoConstraints = false
+        expandedVCTopAnchor = expandedVC?.view.topAnchor.constraint(equalTo: view.topAnchor, constant: startingExpandedVCFrame.origin.y)
+        expandedVCLeadingAnchor = expandedVC?.view.leadingAnchor.constraint(equalTo: view.leadingAnchor, constant: startingExpandedVCFrame.origin.x)
+        expandedVCWidthAnchor = expandedVC?.view.widthAnchor.constraint(equalToConstant: startingExpandedVCFrame.width)
+        expandedVCHeightAnchor = expandedVC?.view.heightAnchor.constraint(equalToConstant: startingExpandedVCFrame.height)
+        
+        NSLayoutConstraint.activate([expandedVCTopAnchor!, expandedVCLeadingAnchor!, expandedVCWidthAnchor!, expandedVCHeightAnchor!])
+        view.layoutIfNeeded()
+    }
+    
+    func setExpandedVCAnchorConstants(top: CGFloat, leading: CGFloat, width: CGFloat, height: CGFloat) {
+        self.expandedVCTopAnchor?.constant = top
+        self.expandedVCLeadingAnchor?.constant = leading
+        self.expandedVCWidthAnchor?.constant = width
+        self.expandedVCHeightAnchor?.constant = height
+        self.view.layoutIfNeeded()
+    }
+    
+    func animateExpandedVCFullScreen() {
+        UIView.animate(withDuration: 0.7, delay: 0, usingSpringWithDamping: 0.9, initialSpringVelocity: 0.5, options: .curveEaseOut) { [weak self] in
+            guard let self = self else { return }
+            self.tappedCell?.setStackViewTopAnchorTo(constant: 64)
+            self.setExpandedVCAnchorConstants(top: 0, leading: 0, width: self.view.frame.width, height: self.view.frame.height)
+            self.tabBarController?.tabBar.frame.origin.y = self.view.frame.size.height
+        }
+    }
+    
+    func showSingleAppFullScreen(indexPath: IndexPath) {
+        expandedVCFullScreenSetup(indexPath: indexPath)
+        layoutExpandedVC(indexPath: indexPath)
+        animateExpandedVCFullScreen()
     }
     
     // MARK: - Selector
@@ -103,11 +162,7 @@ class TodayVC: LoadingViewController {
             self.expandedVC?.hideCloseButton()
             self.tappedCell?.setStackViewTopAnchorTo(constant: 32)
 
-            self.expandedVCTopAnchor?.constant = self.startingExpandedVCFrame!.origin.y
-            self.expandedVCLeadingAnchor?.constant = self.startingExpandedVCFrame!.origin.x
-            self.expandedVCWidthAnchor?.constant = self.startingExpandedVCFrame!.width
-            self.expandedVCHeightAnchor?.constant = self.startingExpandedVCFrame!.height
-            self.view.layoutIfNeeded()
+            self.setExpandedVCAnchorConstants(top: self.startingExpandedVCFrame!.origin.y, leading: self.startingExpandedVCFrame!.origin.x, width: self.startingExpandedVCFrame!.width, height: self.startingExpandedVCFrame!.height)
             
             self.expandedVC?.scrollToTop()
             
@@ -120,17 +175,12 @@ class TodayVC: LoadingViewController {
     
     @objc func handleCellTapped(gesture: UIGestureRecognizer) {
         let collectionView = gesture.view
-
         var superView = collectionView?.superview
 
         while superView != nil {
             if let cell = superView as? TodayMultipleAppCell {
                 guard let indexPath = self.collectionView.indexPath(for: cell) else { return }
-                let multipleAppsVC = MultipleAppsVC(mode: .fullscreen)
-                multipleAppsVC.results = self.todayItems[indexPath.item].apps
-                let navController = UINavigationController(rootViewController: multipleAppsVC)
-                navController.modalPresentationStyle = .fullScreen
-                present(navController, animated: true, completion: nil)
+                showDailyListFullScreen(indexPath: indexPath)
                 return
             }
 
@@ -167,47 +217,11 @@ extension TodayVC: UICollectionViewDataSource, UICollectionViewDelegate, UIColle
     }
     
     func collectionView(_ collectionView: UICollectionView, didSelectItemAt indexPath: IndexPath) {
-        if todayItems[indexPath.item].cellType == .multiple {
-            let multipleAppsVC = MultipleAppsVC(mode: .fullscreen)
-            multipleAppsVC.results = todayItems[indexPath.item].apps
-            let navController = UINavigationController(rootViewController: multipleAppsVC)
-            navController.modalPresentationStyle = .fullScreen
-            present(navController, animated: true, completion: nil)
-        } else {
-            guard let cell = collectionView.cellForItem(at: indexPath) else { return }
-            guard let startingFrame = cell.superview?.convert(cell.frame, to: nil) else { return }
-            startingExpandedVCFrame = startingFrame
-            collectionView.isUserInteractionEnabled = false
-            
-            expandedVC = ExpandedVC(todayItem: todayItems[indexPath.row], dismissHandler: { self.handleRemoveExpandedView() })
-            expandedVC?.view.layer.cornerRadius = 16
-            expandedVC?.view.clipsToBounds = true
-            tappedCell = expandedVC?.headerCell()
-            
-            addChild(expandedVC!)
-            view.addSubview(expandedVC!.view)
-            expandedVC!.didMove(toParent: self)
-            
-            expandedVC?.view.translatesAutoresizingMaskIntoConstraints = false
-            expandedVCTopAnchor = expandedVC?.view.topAnchor.constraint(equalTo: view.topAnchor, constant: startingFrame.origin.y)
-            expandedVCLeadingAnchor = expandedVC?.view.leadingAnchor.constraint(equalTo: view.leadingAnchor, constant: startingFrame.origin.x)
-            expandedVCWidthAnchor = expandedVC?.view.widthAnchor.constraint(equalToConstant: startingFrame.width)
-            expandedVCHeightAnchor = expandedVC?.view.heightAnchor.constraint(equalToConstant: startingFrame.height)
-            
-            NSLayoutConstraint.activate([expandedVCTopAnchor!, expandedVCLeadingAnchor!, expandedVCWidthAnchor!, expandedVCHeightAnchor!])
-            view.layoutIfNeeded()
-            
-            UIView.animate(withDuration: 0.7, delay: 0, usingSpringWithDamping: 0.9, initialSpringVelocity: 0.5, options: .curveEaseOut) { [weak self] in
-                guard let self = self else { return }
-                self.tappedCell?.setStackViewTopAnchorTo(constant: 64)
-                self.expandedVCTopAnchor?.constant = 0
-                self.expandedVCLeadingAnchor?.constant = 0
-                self.expandedVCWidthAnchor?.constant = self.view.frame.width
-                self.expandedVCHeightAnchor?.constant = self.view.frame.height
-                self.view.layoutIfNeeded()
-                
-                self.tabBarController?.tabBar.frame.origin.y = self.view.frame.size.height
-            }
+        switch todayItems[indexPath.item].cellType {
+            case .single:
+                showSingleAppFullScreen(indexPath: indexPath)
+            case .multiple:
+                showDailyListFullScreen(indexPath: indexPath)
         }
     }
 }

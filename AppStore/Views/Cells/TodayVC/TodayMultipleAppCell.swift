@@ -21,7 +21,6 @@ class TodayMultipleAppCell: BaseTodayCell {
     override init(frame: CGRect) {
         super.init(frame: frame)
         layoutUI()
-        layer.cornerRadius = 16
     }
     
     required init?(coder: NSCoder) {
