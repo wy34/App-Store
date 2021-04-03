@@ -30,6 +30,12 @@ class TodayVC: LoadingViewController {
         return cv
     }()
     
+    private let visualEffectView: UIVisualEffectView = {
+        let view = UIVisualEffectView(effect: UIBlurEffect(style: .regular))
+        view.alpha = 0
+        return view
+    }()
+    
     private var expandedVC: ExpandedVC?
     private var tappedCell: TodayCell?
     
@@ -47,8 +53,9 @@ class TodayVC: LoadingViewController {
 
     // MARK: - Helpers
     func layoutUI() {
-        view.addSubview(collectionView)
+        view.addSubviews(collectionView, visualEffectView)
         collectionView.anchor(top: view.topAnchor, trailing: view.trailingAnchor, bottom: view.bottomAnchor, leading: view.leadingAnchor)
+        visualEffectView.frame = view.bounds
     }
     
     func fetchApps() {
@@ -114,8 +121,6 @@ class TodayVC: LoadingViewController {
     func layoutExpandedVC(indexPath: IndexPath) {
         guard let startingExpandedVCFrame = self.startingExpandedVCFrame else { return }
         expandedVC = ExpandedVC(todayItem: todayItems[indexPath.row], dismissHandler: { self.handleRemoveExpandedView() })
-        expandedVC?.view.layer.cornerRadius = 16
-        expandedVC?.view.clipsToBounds = true
         tappedCell = expandedVC?.headerCell()
         
         addChild(expandedVC!)
@@ -143,6 +148,7 @@ class TodayVC: LoadingViewController {
     func animateExpandedVCFullScreen() {
         UIView.animate(withDuration: 0.7, delay: 0, usingSpringWithDamping: 0.9, initialSpringVelocity: 0.5, options: .curveEaseOut) { [weak self] in
             guard let self = self else { return }
+            self.visualEffectView.alpha = 1
             self.tappedCell?.setStackViewTopAnchorTo(constant: 64)
             self.setExpandedVCAnchorConstants(top: 0, leading: 0, width: self.view.frame.width, height: self.view.frame.height)
             self.tabBarController?.tabBar.frame.origin.y = self.view.frame.size.height
@@ -156,11 +162,14 @@ class TodayVC: LoadingViewController {
     }
     
     // MARK: - Selector
-    @objc func handleRemoveExpandedView() {
+    @objc fileprivate func handleRemoveExpandedView() {
         UIView.animate(withDuration: 0.7, delay: 0, usingSpringWithDamping: 0.9, initialSpringVelocity: 0.5, options: .curveEaseOut) { [weak self] in
             guard let self = self else { return }
             self.expandedVC?.hideCloseButton()
             self.tappedCell?.setStackViewTopAnchorTo(constant: 32)
+            
+            self.visualEffectView.alpha = 0
+            self.expandedVC?.view.transform = .identity
 
             self.setExpandedVCAnchorConstants(top: self.startingExpandedVCFrame!.origin.y, leading: self.startingExpandedVCFrame!.origin.x, width: self.startingExpandedVCFrame!.width, height: self.startingExpandedVCFrame!.height)
             
@@ -173,7 +182,7 @@ class TodayVC: LoadingViewController {
         }
     }
     
-    @objc func handleCellTapped(gesture: UIGestureRecognizer) {
+    @objc fileprivate func handleCellTapped(gesture: UIGestureRecognizer) {
         let collectionView = gesture.view
         var superView = collectionView?.superview
 

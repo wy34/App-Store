@@ -46,7 +46,8 @@ class ExpandedVC: UIViewController {
     override func viewDidLoad() {
         super.viewDidLoad()
         layoutUI()
-        closeButton.addTarget(self, action: #selector(dismissExpandedView), for: .touchUpInside)
+        configureUI()
+        addPanGesture()
     }
     
     // MARK: - Helpers
@@ -54,6 +55,12 @@ class ExpandedVC: UIViewController {
         view.addSubviews(tableView, closeButton)
         tableView.anchor(top: view.topAnchor, trailing: view.trailingAnchor, bottom: view.bottomAnchor, leading: view.leadingAnchor)
         closeButton.anchor(top: view.topAnchor, trailing: view.trailingAnchor, padTop: 45, padTrailing: 20)
+    }
+    
+    func configureUI() {
+        view.layer.cornerRadius = 16
+        view.clipsToBounds = true
+        closeButton.addTarget(self, action: #selector(dismissExpandedView), for: .touchUpInside)
     }
     
     func hideCloseButton() {
@@ -69,9 +76,42 @@ class ExpandedVC: UIViewController {
         return expandedVCHeaderCell.todayCell
     }
     
+    func addPanGesture() {
+        let gesture = UIPanGestureRecognizer(target: self, action: #selector(handleDrag(gesture:)))
+        gesture.delegate = self
+        view.addGestureRecognizer(gesture)
+    }
+    
+    func scrollViewDidScroll(_ scrollView: UIScrollView) {
+        if scrollView.contentOffset.y < 0 {
+            scrollView.isScrollEnabled = false
+        } else {
+            scrollView.isScrollEnabled = true
+        }
+    }
+    
     // MARK: - Selector
     @objc func dismissExpandedView() {
         dismissHandler?()
+    }
+    
+    @objc fileprivate func handleDrag(gesture: UIPanGestureRecognizer) {
+        let translationY = gesture.translation(in: view).y
+        
+        if tableView.contentOffset.y > 0 {
+            return
+        }
+        
+        if gesture.state == .changed {
+            if translationY > 0 {
+                let scale = max(1 - (translationY / 1000), 0.5)
+                view.transform = CGAffineTransform(scaleX: scale, y: scale)
+            }
+        } else if gesture.state == .ended {
+            if translationY > 0 {
+                dismissHandler?()
+            }
+        }
     }
 }
 
@@ -98,5 +138,12 @@ extension ExpandedVC: UITableViewDelegate, UITableViewDataSource {
         }
         
         return tableView.rowHeight
+    }
+}
+
+// MARK: - UIGestureRecognizerDelegate
+extension ExpandedVC: UIGestureRecognizerDelegate {
+    func gestureRecognizer(_ gestureRecognizer: UIGestureRecognizer, shouldRecognizeSimultaneouslyWith otherGestureRecognizer: UIGestureRecognizer) -> Bool {
+        return true
     }
 }
