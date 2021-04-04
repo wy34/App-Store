@@ -28,8 +28,14 @@ class ExpandedVC: UIViewController {
         return tv
     }()
     
+    private let floatingContainerView: View = {
+        let view = View()
+        view.layer.cornerRadius = 16
+        view.clipsToBounds = true
+        return view
+    }()
+    
     private let closeButton = Button(image: UIImage(systemName: "xmark.circle.fill")!.applyingSymbolConfiguration(.init(font: .systemFont(ofSize: 23)))!)
-    let floatingContainerView = View()
     
     // MARK: - Init
     init(todayItem: TodayItem, dismissHandler: (() -> Void)?) {
@@ -66,8 +72,6 @@ class ExpandedVC: UIViewController {
     }
     
     func setupFloatingControls() {
-        floatingContainerView.layer.cornerRadius = 16
-        floatingContainerView.clipsToBounds = true
         view.addSubview(floatingContainerView)
         floatingContainerView.setDimension(hConst: 90)
         floatingContainerView.anchor(trailing: view.trailingAnchor, bottom: view.bottomAnchor, leading: view.leadingAnchor, padTrailing: 16, padBottom: -150, padLeading: 16)
