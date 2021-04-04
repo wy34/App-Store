@@ -42,12 +42,12 @@ class PreviewsVC: UIViewController {
 // MARK: - UICollectionViewDelegate, UICollectionViewDataSource, UICollectionViewDelegateFlowLayout
 extension PreviewsVC: UICollectionViewDelegate, UICollectionViewDataSource, UICollectionViewDelegateFlowLayout {
     func collectionView(_ collectionView: UICollectionView, numberOfItemsInSection section: Int) -> Int {
-        return app?.screenshotUrls.count ?? 0
+        return app?.screenshotUrls!.count ?? 0
     }
     
     func collectionView(_ collectionView: UICollectionView, cellForItemAt indexPath: IndexPath) -> UICollectionViewCell {
         let cell = collectionView.dequeueReusableCell(withReuseIdentifier: ScreenshotCell.reuseId, for: indexPath) as! ScreenshotCell
-        let screenshotUrl = app?.screenshotUrls[indexPath.item]
+        let screenshotUrl = app?.screenshotUrls![indexPath.item]
         cell.configureWith(screenshotUrl: screenshotUrl)
         return cell
     }

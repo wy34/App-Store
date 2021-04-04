@@ -81,7 +81,7 @@ extension SearchVC: UICollectionViewDataSource, UICollectionViewDelegateFlowLayo
     
     func collectionView(_ collectionView: UICollectionView, didSelectItemAt indexPath: IndexPath) {
         let app = searchedApps[indexPath.item]
-        let vc = AppDetailVC(id: String(app.trackId))
+        let vc = AppDetailVC(id: String(app.trackId!))
         navigationController?.pushViewController(vc, animated: true)
     }
 }

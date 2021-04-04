@@ -24,5 +24,9 @@ enum URLString: String {
     static func appReviewsUrl(id: String) -> String {
         return "https://itunes.apple.com/rss/customerreviews/page=1/id=\(id)/sortby=mostrecent/json?en&cc=us"
     }
+    
+    static func musicSearchUrl(searchTerm: String, offset: Int) -> String {
+        return "https://itunes.apple.com/search?term=\(searchTerm)&offset=\(offset)&limit=20"
+    }
 }
 

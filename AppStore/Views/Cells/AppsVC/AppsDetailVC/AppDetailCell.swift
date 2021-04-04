@@ -54,7 +54,7 @@ class AppDetailCell: UICollectionViewCell {
         artistLabel.text = app.artistName
         priceButton.setTitle(app.formattedPrice, for: .normal)
         appIconImageView.setImage(from: app.artworkUrl100)
-        versionLabel.text = "Version " + app.version
+        versionLabel.text = "Version " + app.version!
         releaseNotesLabel.text = app.releaseNotes
     }
 }

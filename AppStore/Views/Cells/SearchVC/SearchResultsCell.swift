@@ -62,14 +62,14 @@ class SearchResultsCell: UICollectionViewCell {
         for i in 0...2 {
             [screenshot1ImageView, screenshot2ImageView, screenshot3ImageView][i].image = nil
             
-            if app.screenshotUrls.count > i {
+            if app.screenshotUrls!.count > i {
                 switch i {
                     case 0:
-                        screenshot1ImageView.setImage(from: app.screenshotUrls[i])
+                        screenshot1ImageView.setImage(from: app.screenshotUrls![i])
                     case 1:
-                        screenshot2ImageView.setImage(from: app.screenshotUrls[i])
+                        screenshot2ImageView.setImage(from: app.screenshotUrls![i])
                     default:
-                        screenshot3ImageView.setImage(from: app.screenshotUrls[i])
+                        screenshot3ImageView.setImage(from: app.screenshotUrls![i])
                 }
             }
         }
