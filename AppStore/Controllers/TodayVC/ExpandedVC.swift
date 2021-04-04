@@ -29,6 +29,7 @@ class ExpandedVC: UIViewController {
     }()
     
     private let closeButton = Button(image: UIImage(systemName: "xmark.circle.fill")!.applyingSymbolConfiguration(.init(font: .systemFont(ofSize: 23)))!)
+    let floatingContainerView = View()
     
     // MARK: - Init
     init(todayItem: TodayItem, dismissHandler: (() -> Void)?) {
@@ -46,6 +47,7 @@ class ExpandedVC: UIViewController {
     override func viewDidLoad() {
         super.viewDidLoad()
         layoutUI()
+        setupFloatingControls()
         configureUI()
         addPanGesture()
     }
@@ -61,6 +63,33 @@ class ExpandedVC: UIViewController {
         view.layer.cornerRadius = 16
         view.clipsToBounds = true
         closeButton.addTarget(self, action: #selector(dismissExpandedView), for: .touchUpInside)
+    }
+    
+    func setupFloatingControls() {
+        floatingContainerView.layer.cornerRadius = 16
+        floatingContainerView.clipsToBounds = true
+        view.addSubview(floatingContainerView)
+        floatingContainerView.setDimension(hConst: 90)
+        floatingContainerView.anchor(trailing: view.trailingAnchor, bottom: view.bottomAnchor, leading: view.leadingAnchor, padTrailing: 16, padBottom: -150, padLeading: 16)
+        
+        let visualEffectView = UIVisualEffectView(effect: UIBlurEffect(style: .systemUltraThinMaterialLight))
+        floatingContainerView.addSubview(visualEffectView)
+        visualEffectView.setDimension(wAnchor: floatingContainerView.widthAnchor, hAnchor: floatingContainerView.heightAnchor)
+        visualEffectView.center(x: floatingContainerView.centerXAnchor, y: floatingContainerView.centerYAnchor)
+        
+        let imageView = ImageView(image: todayItem!.image, cornerRadius: 16)
+        let titleLabel = Label(text: "Life Hack", font: .boldSystemFont(ofSize: 18))
+        let captionLabel = Label(text: "Utilizing your Time", font: .systemFont(ofSize: 16))
+        let getButton = Button(title: "GET", textColor: .white, font: .boldSystemFont(ofSize: 16), bgColor: .darkGray)
+        getButton.layer.cornerRadius = 16
+        
+        let labelStackView = StackView(views: [titleLabel, captionLabel], axis: .vertical)
+        let stackView = StackView(views: [imageView, labelStackView, getButton], spacing: 16, alignment: .center)
+        
+        floatingContainerView.addSubview(stackView)
+        stackView.anchor(top: floatingContainerView.topAnchor, trailing: floatingContainerView.trailingAnchor, bottom: floatingContainerView.bottomAnchor, leading: floatingContainerView.leadingAnchor, padTop: 0, padTrailing: 16, padBottom: 0, padLeading: 16)
+        imageView.setDimension(wConst: 68, hConst: 68)
+        getButton.setDimension(wConst: 80, hConst: 32)
     }
     
     func hideCloseButton() {
@@ -87,6 +116,12 @@ class ExpandedVC: UIViewController {
             scrollView.isScrollEnabled = false
         } else {
             scrollView.isScrollEnabled = true
+        }
+                
+        UIView.animate(withDuration: 0.7, delay: 0, usingSpringWithDamping: 0.7, initialSpringVelocity: 0.7, options: .curveEaseOut) {
+            let translationY: CGFloat = scrollView.contentOffset.y < 100 || (scrollView.contentOffset.y >= scrollView.contentSize.height - scrollView.frame.size.height) ? 175 : -175
+            let transformation = CGAffineTransform(translationX: 0, y: translationY)
+            self.floatingContainerView.transform = transformation
         }
     }
     
@@ -137,7 +172,7 @@ extension ExpandedVC: UITableViewDelegate, UITableViewDataSource {
             return 450
         }
         
-        return tableView.rowHeight
+        return UITableView.automaticDimension
     }
 }
 

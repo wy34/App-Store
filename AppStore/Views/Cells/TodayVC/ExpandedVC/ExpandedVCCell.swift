@@ -20,6 +20,15 @@ class ExpandedVCCell: UITableViewCell {
         attributedText.append(NSAttributedString(string: "\nBattle in dungeons. Collection treasure. Solve puzzles. Sail to new lands. Oceanhorn lets you do it all in a beautifully detailed world.", attributes: [NSAttributedString.Key.foregroundColor: UIColor.gray]))
         attributedText.append(NSAttributedString(string: "\n\n\nHeroic adventure", attributes: [NSAttributedString.Key.foregroundColor: UIColor.black]))
         attributedText.append(NSAttributedString(string: "\nBattle in dungeons. Collection treasure. Solve puzzles. Sail to new lands. Oceanhorn lets you do it all in a beautifully detailed world.", attributes: [NSAttributedString.Key.foregroundColor: UIColor.gray]))
+        attributedText.append(NSAttributedString(string: "\nBattle in dungeons. Collection treasure. Solve puzzles. Sail to new lands. Oceanhorn lets you do it all in a beautifully detailed world.", attributes: [NSAttributedString.Key.foregroundColor: UIColor.gray]))
+        attributedText.append(NSAttributedString(string: "\n\n\nHeroic adventure", attributes: [NSAttributedString.Key.foregroundColor: UIColor.black]))
+        attributedText.append(NSAttributedString(string: "\nBattle in dungeons. Collection treasure. Solve puzzles. Sail to new lands. Oceanhorn lets you do it all in a beautifully detailed world.", attributes: [NSAttributedString.Key.foregroundColor: UIColor.gray]))
+        attributedText.append(NSAttributedString(string: "\n\n\nHeroic adventure", attributes: [NSAttributedString.Key.foregroundColor: UIColor.black]))
+        attributedText.append(NSAttributedString(string: "\nBattle in dungeons. Collection treasure. Solve puzzles. Sail to new lands. Oceanhorn lets you do it all in a beautifully detailed world.", attributes: [NSAttributedString.Key.foregroundColor: UIColor.gray]))
+        attributedText.append(NSAttributedString(string: "\n\n\nHeroic adventure", attributes: [NSAttributedString.Key.foregroundColor: UIColor.black]))
+        attributedText.append(NSAttributedString(string: "\nBattle in dungeons. Collection treasure. Solve puzzles. Sail to new lands. Oceanhorn lets you do it all in a beautifully detailed world.", attributes: [NSAttributedString.Key.foregroundColor: UIColor.gray]))
+        attributedText.append(NSAttributedString(string: "\n\n\nHeroic adventure", attributes: [NSAttributedString.Key.foregroundColor: UIColor.black]))
+        attributedText.append(NSAttributedString(string: "\nBattle in dungeons. Collection treasure. Solve puzzles. Sail to new lands. Oceanhorn lets you do it all in a beautifully detailed world.", attributes: [NSAttributedString.Key.foregroundColor: UIColor.gray]))
         label.attributedText = attributedText
         label.font = UIFont.systemFont(ofSize: 20, weight: .regular)
         label.numberOfLines = 0

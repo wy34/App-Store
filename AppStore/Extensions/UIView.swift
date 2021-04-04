@@ -46,6 +46,18 @@ extension UIView {
         }
     }
     
+    func setDimension(wAnchor: NSLayoutDimension? = nil, hAnchor: NSLayoutDimension? = nil, wMult: CGFloat = 1, hMult: CGFloat = 1) {
+        translatesAutoresizingMaskIntoConstraints = false
+        
+        if let wAnchor = wAnchor {
+            widthAnchor.constraint(equalTo: wAnchor, multiplier: wMult).isActive = true
+        }
+        
+        if let hAnchor = hAnchor {
+            heightAnchor.constraint(equalTo: hAnchor, multiplier: hMult).isActive = true
+        }
+    }
+    
     func center(x: NSLayoutXAxisAnchor? = nil, y: NSLayoutYAxisAnchor? = nil, padX: CGFloat = 0, padY: CGFloat = 0) {
         translatesAutoresizingMaskIntoConstraints = false
 
