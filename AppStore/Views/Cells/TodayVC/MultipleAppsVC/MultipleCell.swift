@@ -22,7 +22,7 @@ class MultipleCell: UICollectionViewCell {
     
     private lazy var stackView = StackView(views: [appIconImageView, labelStack, getButton], spacing: 16, alignment: .center)
     
-    private let separator = View(bgColor: #colorLiteral(red: 0.8808360696, green: 0.8841300607, blue: 0.8920767903, alpha: 1))
+    private let separator = PlainView(bgColor: #colorLiteral(red: 0.8808360696, green: 0.8841300607, blue: 0.8920767903, alpha: 1))
     
     // MARK: - Init
     override init(frame: CGRect) {

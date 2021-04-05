@@ -28,8 +28,8 @@ class ExpandedVC: UIViewController {
         return tv
     }()
     
-    private let floatingContainerView: View = {
-        let view = View()
+    private let floatingContainerView: PlainView = {
+        let view = PlainView()
         view.layer.cornerRadius = 16
         view.clipsToBounds = true
         return view

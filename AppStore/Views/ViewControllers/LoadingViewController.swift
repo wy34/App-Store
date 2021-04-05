@@ -9,7 +9,7 @@ import UIKit
 
 class LoadingViewController: UIViewController {
     // MARK: - Views
-    private let loadingContainerView = View(bgColor: .white)
+    private let loadingContainerView = PlainView(bgColor: .white)
     
     private let activityIndicator: UIActivityIndicatorView = {
         let a = UIActivityIndicatorView()
