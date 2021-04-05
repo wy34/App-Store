@@ -18,7 +18,7 @@ class AppRowCell: UICollectionViewCell {
     private let companyLabel = Label(text: "Company Name", font: .systemFont(ofSize: 12))
     private lazy var labelStack = StackView(views: [nameLabel, companyLabel], axis: .vertical)
     
-    private let getButton = Button(title: "GET", textColor: .systemBlue, font: .boldSystemFont(ofSize: 14), bgColor: #colorLiteral(red: 0.9146333933, green: 0.9102825522, blue: 0.9179967046, alpha: 1))
+    let getButton = Button(title: "GET", textColor: .systemBlue, font: .boldSystemFont(ofSize: 14), bgColor: #colorLiteral(red: 0.9146333933, green: 0.9102825522, blue: 0.9179967046, alpha: 1))
     
     private lazy var stackView = StackView(views: [appIconImageView, labelStack, getButton], spacing: 16, alignment: .center)
     
